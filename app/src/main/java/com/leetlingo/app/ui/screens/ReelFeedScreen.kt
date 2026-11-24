@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import kotlinx.coroutines.launch
 import com.leetlingo.app.data.model.ReelProblem
 import com.leetlingo.app.ui.components.Duo3DButton
 import com.leetlingo.app.ui.components.DuoNinjaMascot
@@ -88,6 +89,7 @@ fun ReelFeedScreen(
     }
 
     val pagerState = rememberPagerState(pageCount = { feedItems.size })
+    val coroutineScope = rememberCoroutineScope()
     var activeSolveProblem by remember { mutableStateOf<ReelProblem?>(null) }
     var currentLevel by remember { mutableStateOf(SolveLevel.REEL_CARD) }
     var userPseudoInput by remember { mutableStateOf("") }
@@ -164,6 +166,12 @@ fun ReelFeedScreen(
                                 problem = item.problem,
                                 onSwipeRightTooHard = {
                                     onTooHardBail(item.problem)
+                                    // Smoothly scroll to the next reel
+                                    if (pagerState.currentPage < feedItems.size - 1) {
+                                        coroutineScope.launch {
+                                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                                        }
+                                    }
                                 },
                                 onCrackIt = {
                                     activeSolveProblem = item.problem
