@@ -47,7 +47,7 @@ fun VaultScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("VAULT", color = VaultYellowDark, style = HelveticaTitle)
+            Text("Vault", color = VaultYellowDark, style = HelveticaTitle)
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(12.dp))
@@ -55,21 +55,21 @@ fun VaultScreen(
                     .border(2.dp, VaultYellow, RoundedCornerShape(12.dp))
                     .padding(horizontal = 10.dp, vertical = 4.dp)
             ) {
-                Text("${vaultItems.size} CONQUERED", color = VaultYellowDark, style = HelveticaSmall)
+                Text("${vaultItems.size} Conquered", color = VaultYellowDark, style = HelveticaSmall)
             }
         }
 
         Spacer(modifier = Modifier.height(14.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("ALL", "FADING", "COLD", "CONQUERED").forEach { filter ->
-                val isSelected = selectedFilter == filter
+            listOf("All", "Fading", "Cold", "Conquered").forEach { filter ->
+                val isSelected = selectedFilter.equals(filter, ignoreCase = true)
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(14.dp))
                         .background(if (isSelected) VaultYellow else theme.cardBackground)
                         .border(2.dp, if (isSelected) VaultYellowDark else theme.border, RoundedCornerShape(14.dp))
-                        .clickable { selectedFilter = filter }
+                        .clickable { selectedFilter = filter.uppercase() }
                         .padding(horizontal = 14.dp, vertical = 6.dp)
                 ) {
                     Text(

@@ -39,7 +39,7 @@ fun AccountScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("ACCOUNT", color = AccountTextWhite, style = HelveticaTitle)
+                Text("Account", color = AccountTextWhite, style = HelveticaTitle)
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
@@ -47,7 +47,7 @@ fun AccountScreen(
                         .border(1.dp, AccountBorderGray, RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text("SHINOBI ID", color = AccountTextMuted, style = HelveticaSmall)
+                    Text("Shinobi ID", color = AccountTextMuted, style = HelveticaSmall)
                 }
             }
 
@@ -70,7 +70,7 @@ fun AccountScreen(
                     .padding(18.dp)
             ) {
                 Column {
-                    Text("KARTHIK", color = AccountTextWhite, style = HelveticaTitle)
+                    Text("Karthik", color = AccountTextWhite, style = HelveticaTitle)
                     Text("karthik@domain.dev", color = AccountTextMuted, style = HelveticaBody)
                     Spacer(modifier = Modifier.height(12.dp))
                     Row(
@@ -103,7 +103,7 @@ fun AccountScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text("LIFETIME SHINOBI STATS", color = AccountTextMuted, style = HelveticaSmall)
+            Text("Lifetime Shinobi Stats", color = AccountTextMuted, style = HelveticaSmall)
             Spacer(modifier = Modifier.height(8.dp))
 
             Box(

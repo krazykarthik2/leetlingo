@@ -38,7 +38,7 @@ fun AscendScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("ASCEND", color = AscendGreen, style = HelveticaTitle)
+                Text("Ascend", color = AscendGreen, style = HelveticaTitle)
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
@@ -46,7 +46,7 @@ fun AscendScreen(
                         .border(2.dp, AscendGreen, RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text("NEW CONCEPT", color = AscendGreenDark, style = HelveticaSmall)
+                    Text("New Concept", color = AscendGreenDark, style = HelveticaSmall)
                 }
             }
 
@@ -75,7 +75,7 @@ fun AscendScreen(
                                 .background(AscendGreen.copy(alpha = 0.15f))
                                 .padding(horizontal = 10.dp, vertical = 4.dp)
                         ) {
-                            Text(concept.topic.uppercase(), color = AscendGreen, style = HelveticaSmall)
+                            Text(concept.topic.replaceFirstChar { it.uppercase() }, color = AscendGreen, style = HelveticaSmall)
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
@@ -83,12 +83,12 @@ fun AscendScreen(
                         Text(concept.tagline, color = theme.textSecondary, style = HelveticaSubtitle)
 
                         Spacer(modifier = Modifier.height(14.dp))
-                        Text("SECRET PATTERN:", color = AscendGreen, style = HelveticaSmall)
+                        Text("Secret Pattern", color = AscendGreen, style = HelveticaSmall)
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(concept.coreIdea, color = theme.textPrimary, style = HelveticaBody)
 
                         Spacer(modifier = Modifier.height(14.dp))
-                        Text("APPLY IN INTERVIEWS:", color = AscendGreen, style = HelveticaSmall)
+                        Text("Apply in Interviews", color = AscendGreen, style = HelveticaSmall)
                         concept.whenToUse.forEach { bullet ->
                             Text("• $bullet", color = theme.textSecondary, style = HelveticaBody, modifier = Modifier.padding(vertical = 1.dp))
                         }

@@ -41,7 +41,7 @@ fun ReflectScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("REFLECT", color = ReflectRed, style = HelveticaTitle)
+                Text("Reflect", color = ReflectRed, style = HelveticaTitle)
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
@@ -49,7 +49,7 @@ fun ReflectScreen(
                         .border(2.dp, ReflectRed, RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text("DIAGNOSTIC", color = ReflectRed, style = HelveticaSmall)
+                    Text("Diagnostic", color = ReflectRed, style = HelveticaSmall)
                 }
             }
 
@@ -125,7 +125,7 @@ fun ReflectScreen(
                         .padding(14.dp)
                 ) {
                     Column {
-                        Text("CRITICAL GAP: ${it.name.uppercase()}", color = ReflectRed, style = HelveticaSmall)
+                        Text("Critical Gap: ${it.name}", color = ReflectRed, style = HelveticaSmall)
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(profile.summary, color = theme.textPrimary, style = HelveticaBody)
                     }

@@ -13,12 +13,10 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.TrendingFlat
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.WorkspacePremium
+import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,6 +28,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.leetlingo.app.data.model.ReelProblem
 import com.leetlingo.app.ui.components.Duo3DButton
 import com.leetlingo.app.ui.components.DuoNinjaMascot
@@ -41,6 +40,12 @@ enum class SolveLevel {
     L1_APPROACH,
     L2_PSEUDO,
     L2_WIN_PYTHON
+}
+
+// Model to represent items in the endless vertical feed (Problem Reel or Interstitial Ad)
+sealed class FeedItem {
+    data class Problem(val problem: ReelProblem) : FeedItem()
+    data class InterstitialAd(val id: String, val sponsorTitle: String, val tagline: String) : FeedItem()
 }
 
 @Composable
@@ -61,8 +66,28 @@ fun ReelFeedScreen(
         return
     }
 
-    // Instagram Reel style vertical pager state with preloading
-    val pagerState = rememberPagerState(pageCount = { problems.size })
+    // Interleave ads between reels: every 3 problems, insert an ad card
+    var isSubscribedNoAds by remember { mutableStateOf(false) }
+    var showPaywallDialog by remember { mutableStateOf(false) }
+
+    val feedItems = remember(problems, isSubscribedNoAds) {
+        val list = mutableListOf<FeedItem>()
+        problems.forEachIndexed { index, problem ->
+            list.add(FeedItem.Problem(problem))
+            if (!isSubscribedNoAds && (index + 1) % 3 == 0) {
+                list.add(
+                    FeedItem.InterstitialAd(
+                        id = "ad_${index + 1}",
+                        sponsorTitle = "Level Up System Design",
+                        tagline = "Crack distributed systems with interactive flashcards & diagrams."
+                    )
+                )
+            }
+        }
+        list
+    }
+
+    val pagerState = rememberPagerState(pageCount = { feedItems.size })
     var activeSolveProblem by remember { mutableStateOf<ReelProblem?>(null) }
     var currentLevel by remember { mutableStateOf(SolveLevel.REEL_CARD) }
     var userPseudoInput by remember { mutableStateOf("") }
@@ -75,6 +100,7 @@ fun ReelFeedScreen(
     ) {
         // =================================================================
         // PINNED INSTAGRAM-STYLE TOP BAR (NEVER MOVES DURING VERTICAL SCROLL)
+        // Strictly zero diamonds; only streak fire and Capital Case badge
         // =================================================================
         Row(
             modifier = Modifier
@@ -101,21 +127,25 @@ fun ReelFeedScreen(
                     .border(2.dp, ReelBlue, RoundedCornerShape(12.dp))
                     .padding(horizontal = 14.dp, vertical = 6.dp)
             ) {
-                Text("REELS", color = ReelBlue, style = HelveticaSmall)
+                Text("Reels", color = ReelBlue, style = HelveticaSmall)
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Filled.Diamond,
-                    contentDescription = "Gems",
-                    tint = ReelBlue,
-                    modifier = Modifier.size(20.dp)
+            // Pro Ad-Free Pill / Status Indicator
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(if (isSubscribedNoAds) AscendGreen.copy(alpha = 0.15f) else Color.Transparent)
+                    .clickable { showPaywallDialog = true }
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Text(
+                    text = if (isSubscribedNoAds) "Pro Shinobi" else "No Ads",
+                    color = if (isSubscribedNoAds) AscendGreen else theme.textMuted,
+                    style = HelveticaSmall
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("420", color = ReelBlue, style = HelveticaSubtitle)
             }
         }
 
-        Divider(color = theme.border, thickness = 1.dp)
+        HorizontalDivider(color = theme.border, thickness = 1.dp)
 
         // =================================================================
         // FLUID VERTICAL PAGER (INSTAGRAM / TIKTOK REEL MECHANICS)
@@ -128,17 +158,29 @@ fun ReelFeedScreen(
                     beyondViewportPageCount = 2, // Preload next 2 reels
                     modifier = Modifier.fillMaxSize()
                 ) { page ->
-                    val problem = problems[page]
-                    ReelItemFluid(
-                        problem = problem,
-                        onSwipeRightTooHard = {
-                            onTooHardBail(problem)
-                        },
-                        onCrackIt = {
-                            activeSolveProblem = problem
-                            currentLevel = SolveLevel.L1_APPROACH
+                    when (val item = feedItems[page]) {
+                        is FeedItem.Problem -> {
+                            ReelItemFluid(
+                                problem = item.problem,
+                                onSwipeRightTooHard = {
+                                    onTooHardBail(item.problem)
+                                },
+                                onCrackIt = {
+                                    activeSolveProblem = item.problem
+                                    currentLevel = SolveLevel.L1_APPROACH
+                                }
+                            )
                         }
-                    )
+
+                        is FeedItem.InterstitialAd -> {
+                            InterstitialAdView(
+                                ad = item,
+                                onRequestCloseAd = {
+                                    showPaywallDialog = true
+                                }
+                            )
+                        }
+                    }
                 }
             } else {
                 // Interactive Modal Sheet for L1, L2 and Victory
@@ -196,6 +238,227 @@ fun ReelFeedScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+
+    // =====================================================================
+    // PAYWALL MODAL: Rs. 100 / month — No Ads, No Fluff
+    // =====================================================================
+    if (showPaywallDialog) {
+        Dialog(onDismissRequest = { showPaywallDialog = false }) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(theme.cardBackground)
+                    .border(2.dp, theme.border, RoundedCornerShape(24.dp))
+                    .padding(24.dp)
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(AscendGreen.copy(alpha = 0.15f))
+                                .padding(horizontal = 10.dp, vertical = 4.dp)
+                        ) {
+                            Text("Pure Focus", color = AscendGreen, style = HelveticaSmall)
+                        }
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = "Close",
+                            tint = theme.textMuted,
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable { showPaywallDialog = false }
+                        )
+                    }
+
+                    Icon(
+                        imageVector = Icons.Filled.WorkspacePremium,
+                        contentDescription = "Premium Shinobi",
+                        tint = VaultYellow,
+                        modifier = Modifier.size(54.dp)
+                    )
+
+                    Text(
+                        text = "Remove All Ads",
+                        color = theme.textPrimary,
+                        style = HelveticaTitle,
+                        fontWeight = FontWeight.Black
+                    )
+
+                    Text(
+                        text = "Zero fluff. Just pure algorithmic scroll with no interruptions.",
+                        color = theme.textSecondary,
+                        style = HelveticaBody
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(theme.surfaceHighlight)
+                            .border(1.5.dp, theme.border, RoundedCornerShape(16.dp))
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column {
+                                Text("Monthly Shinobi", color = theme.textPrimary, style = HelveticaSubtitle)
+                                Text("Billed monthly, cancel anytime", color = theme.textMuted, style = HelveticaSmall)
+                            }
+                            Text(
+                                "₹100 / mo",
+                                color = AscendGreen,
+                                style = HelveticaTitle,
+                                fontWeight = FontWeight.Black
+                            )
+                        }
+                    }
+
+                    Duo3DButton(
+                        text = "Upgrade for ₹100 / mo",
+                        buttonColor = AscendGreen,
+                        shadowColor = AscendGreenDark,
+                        onClick = {
+                            isSubscribedNoAds = true
+                            showPaywallDialog = false
+                        }
+                    )
+
+                    Text(
+                        text = "Close Ads Forever",
+                        color = theme.textMuted,
+                        style = HelveticaSmall,
+                        modifier = Modifier.clickable {
+                            isSubscribedNoAds = true
+                            showPaywallDialog = false
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Interstitial Ad View inside the Reel feed.
+ * Clicking close opens the ₹100 / month paywall modal.
+ */
+@Composable
+fun InterstitialAdView(
+    ad: FeedItem.InterstitialAd,
+    onRequestCloseAd: () -> Unit
+) {
+    val theme = getAppThemeColors()
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(24.dp))
+                .background(theme.cardBackground)
+                .border(2.dp, theme.border, RoundedCornerShape(24.dp))
+                .padding(20.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(VaultYellow.copy(alpha = 0.15f))
+                            .padding(horizontal = 10.dp, vertical = 4.dp)
+                    ) {
+                        Text("Sponsored", color = VaultYellowDark, style = HelveticaSmall)
+                    }
+
+                    // Tapping close on the ad prompts the paywall
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(theme.surfaceHighlight)
+                            .clickable { onRequestCloseAd() }
+                            .padding(horizontal = 10.dp, vertical = 6.dp)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Filled.Close,
+                                contentDescription = "Close Ad",
+                                tint = theme.textMuted,
+                                modifier = Modifier.size(14.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Close Ad", color = theme.textMuted, style = HelveticaSmall)
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(28.dp))
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(theme.surfaceHighlight),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Filled.Campaign,
+                            contentDescription = "Sponsor",
+                            tint = ReelBlue,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(ad.sponsorTitle, color = theme.textPrimary, style = HelveticaTitle)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(18.dp))
+                Text(ad.tagline, color = theme.textSecondary, style = HelveticaBody)
+            }
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Remove all ads for ₹100 / month",
+                    color = AscendGreen,
+                    style = HelveticaSmall,
+                    modifier = Modifier
+                        .clickable { onRequestCloseAd() }
+                        .padding(bottom = 12.dp)
+                )
+
+                Duo3DButton(
+                    text = "Learn More",
+                    buttonColor = ReelBlue,
+                    shadowColor = ReelBlueDark,
+                    onClick = { /* External sponsor link */ }
+                )
             }
         }
     }
@@ -273,7 +536,7 @@ fun ReelItemFluid(
                         .background(ReelBlue.copy(alpha = 0.15f))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text(problem.topic.uppercase(), color = ReelBlue, style = HelveticaSmall)
+                    Text(problem.topic.replaceFirstChar { it.uppercase() }, color = ReelBlue, style = HelveticaSmall)
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -308,10 +571,10 @@ fun ReelItemFluid(
                                 .padding(12.dp)
                         ) {
                             Column {
-                                Text("INPUT", color = theme.textMuted, style = HelveticaSmall)
+                                Text("Input", color = theme.textMuted, style = HelveticaSmall)
                                 Text(problem.inputSample, color = theme.textPrimary, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                                 Spacer(modifier = Modifier.height(8.dp))
-                                Text("OUTPUT TARGET", color = theme.textMuted, style = HelveticaSmall)
+                                Text("Target Output", color = theme.textMuted, style = HelveticaSmall)
                                 Text(problem.outputSample, color = ReelBlue, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
                             }
                         }
@@ -324,7 +587,7 @@ fun ReelItemFluid(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    "Scroll UP for next reel  •  Swipe RIGHT if too hard",
+                    "Scroll up for next reel  •  Swipe right if too hard",
                     color = theme.textSecondary,
                     style = HelveticaSmall,
                     modifier = Modifier.padding(bottom = 12.dp)
@@ -363,7 +626,7 @@ fun ReelItemFluid(
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Text(
-                        text = "I DON'T KNOW YET",
+                        text = "I Don't Know Yet",
                         color = Color.White.copy(alpha = animatedProgress),
                         style = HelveticaTitle,
                         fontWeight = FontWeight.Black
@@ -456,7 +719,7 @@ fun L1ApproachViewDuo(
                 ) {
                     Column {
                         Text(
-                            if (isCorrect) "CRACKED!" else "MISSED PATTERN!",
+                            if (isCorrect) "Cracked Pattern" else "Missed Pattern",
                             color = if (isCorrect) ReelBlue else ReflectRed,
                             style = HelveticaSubtitle
                         )
@@ -625,8 +888,8 @@ fun L2WinPythonViewDuo(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("PYTHON 3", color = ReelBlue, style = HelveticaSmall)
-                        Text("OPTIMAL RUNTIME", color = theme.textMuted, style = HelveticaSmall)
+                        Text("Python 3", color = ReelBlue, style = HelveticaSmall)
+                        Text("Optimal Runtime", color = theme.textMuted, style = HelveticaSmall)
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
