@@ -29,9 +29,11 @@ import com.leetlingo.app.ui.theme.*
 
 enum class GapAttackPhase {
     OVERVIEW,
-    PHASE_1_DECONSTRUCT,
-    PHASE_2_DRILL,
-    PHASE_3_PATCH_CODE,
+    PHASE_1_MENTAL_MODEL,
+    PHASE_2_INVARIANT,
+    PHASE_3_TRAP,
+    PHASE_4_DRILL,
+    PHASE_5_PATCH_CODE,
     PHASE_COMPLETE
 }
 
@@ -265,7 +267,7 @@ fun ReflectScreen(
             shadowColor = ReflectRedDark,
             onClick = {
                 if (activeTopic != null) {
-                    currentPhase = GapAttackPhase.PHASE_1_DECONSTRUCT
+                    currentPhase = GapAttackPhase.PHASE_1_MENTAL_MODEL
                 }
             }
         )
@@ -284,17 +286,21 @@ fun GapAttackPhaseFlow(
     val drill = remember(topicName) { getDrillContentForTopic(topicName) }
 
     val progressFraction = when (currentPhase) {
-        GapAttackPhase.PHASE_1_DECONSTRUCT -> 0.33f
-        GapAttackPhase.PHASE_2_DRILL -> 0.66f
-        GapAttackPhase.PHASE_3_PATCH_CODE -> 0.92f
+        GapAttackPhase.PHASE_1_MENTAL_MODEL -> 0.17f
+        GapAttackPhase.PHASE_2_INVARIANT -> 0.34f
+        GapAttackPhase.PHASE_3_TRAP -> 0.50f
+        GapAttackPhase.PHASE_4_DRILL -> 0.70f
+        GapAttackPhase.PHASE_5_PATCH_CODE -> 0.88f
         GapAttackPhase.PHASE_COMPLETE -> 1.0f
         else -> 0f
     }
 
     val phaseLabel = when (currentPhase) {
-        GapAttackPhase.PHASE_1_DECONSTRUCT -> "Phase 1 of 3: Deconstruct"
-        GapAttackPhase.PHASE_2_DRILL -> "Phase 2 of 3: Pattern Check"
-        GapAttackPhase.PHASE_3_PATCH_CODE -> "Phase 3 of 3: Patch Code"
+        GapAttackPhase.PHASE_1_MENTAL_MODEL -> "Step 1 of 5: Mental Model"
+        GapAttackPhase.PHASE_2_INVARIANT -> "Step 2 of 5: Invariant"
+        GapAttackPhase.PHASE_3_TRAP -> "Step 3 of 5: Common Trap"
+        GapAttackPhase.PHASE_4_DRILL -> "Step 4 of 5: Pattern Check"
+        GapAttackPhase.PHASE_5_PATCH_CODE -> "Step 5 of 5: Patch Code"
         GapAttackPhase.PHASE_COMPLETE -> "Gap Patched"
         else -> ""
     }
@@ -340,58 +346,40 @@ fun GapAttackPhaseFlow(
         // Phase Content
         Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
             when (currentPhase) {
-                GapAttackPhase.PHASE_1_DECONSTRUCT -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column {
-                            DuoNinjaMascot(
-                                mood = "FOCUS",
-                                dialogText = "Before drilling, lock in the core mental model for $topicName."
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clip(RoundedCornerShape(20.dp))
-                                    .background(theme.cardBackground)
-                                    .border(2.dp, theme.border, RoundedCornerShape(20.dp))
-                                    .padding(18.dp)
-                            ) {
-                                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                                    Column {
-                                        Text("Core Mental Model", color = ReflectRed, style = HelveticaSmall)
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(drill.mentalModel, color = theme.textPrimary, style = HelveticaBody)
-                                    }
-                                    HorizontalDivider(color = theme.border)
-                                    Column {
-                                        Text("Signature Invariant", color = AscendGreen, style = HelveticaSmall)
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(drill.keyTrick, color = theme.textPrimary, style = HelveticaBody)
-                                    }
-                                    HorizontalDivider(color = theme.border)
-                                    Column {
-                                        Text("Common Interview Trap", color = VaultYellowDark, style = HelveticaSmall)
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(drill.commonTrap, color = theme.textSecondary, style = HelveticaBody)
-                                    }
-                                }
-                            }
-                        }
-
-                        Duo3DButton(
-                            text = "Start Phase 2: Pattern Check",
-                            buttonColor = ReflectRed,
-                            shadowColor = ReflectRedDark,
-                            onClick = { onPhaseChange(GapAttackPhase.PHASE_2_DRILL) }
-                        )
-                    }
+                GapAttackPhase.PHASE_1_MENTAL_MODEL -> {
+                    SingleConceptPhaseScreen(
+                        mascotDialog = "Lock in the Core Mental Model for $topicName.",
+                        label = "Core Mental Model",
+                        labelColor = ReflectRed,
+                        body = drill.mentalModel,
+                        ctaText = "Next: Signature Invariant",
+                        onNext = { onPhaseChange(GapAttackPhase.PHASE_2_INVARIANT) }
+                    )
                 }
 
-                GapAttackPhase.PHASE_2_DRILL -> {
+                GapAttackPhase.PHASE_2_INVARIANT -> {
+                    SingleConceptPhaseScreen(
+                        mascotDialog = "Memorize this Signature Invariant.",
+                        label = "Signature Invariant",
+                        labelColor = AscendGreen,
+                        body = drill.keyTrick,
+                        ctaText = "Next: Common Trap",
+                        onNext = { onPhaseChange(GapAttackPhase.PHASE_3_TRAP) }
+                    )
+                }
+
+                GapAttackPhase.PHASE_3_TRAP -> {
+                    SingleConceptPhaseScreen(
+                        mascotDialog = "Watch out for this Common Interview Trap.",
+                        label = "Common Interview Trap",
+                        labelColor = VaultYellowDark,
+                        body = drill.commonTrap,
+                        ctaText = "Start Pattern Check",
+                        onNext = { onPhaseChange(GapAttackPhase.PHASE_4_DRILL) }
+                    )
+                }
+
+                GapAttackPhase.PHASE_4_DRILL -> {
                     var selectedIdx by remember { mutableStateOf<Int?>(null) }
                     var checked by remember { mutableStateOf(false) }
 
@@ -457,12 +445,12 @@ fun GapAttackPhaseFlow(
                             } else {
                                 val isCorrect = drill.options[selectedIdx!!].third
                                 Duo3DButton(
-                                    text = if (isCorrect) "Continue to Phase 3" else "Try Again",
+                                    text = if (isCorrect) "Continue to Patch Code" else "Try Again",
                                     buttonColor = if (isCorrect) AscendGreen else ReflectRed,
                                     shadowColor = if (isCorrect) AscendGreenDark else ReflectRedDark,
                                     onClick = {
                                         if (isCorrect) {
-                                            onPhaseChange(GapAttackPhase.PHASE_3_PATCH_CODE)
+                                            onPhaseChange(GapAttackPhase.PHASE_5_PATCH_CODE)
                                         } else {
                                             checked = false
                                             selectedIdx = null
@@ -474,7 +462,7 @@ fun GapAttackPhaseFlow(
                     }
                 }
 
-                GapAttackPhase.PHASE_3_PATCH_CODE -> {
+                GapAttackPhase.PHASE_5_PATCH_CODE -> {
                     var pseudoInput by remember { mutableStateOf("") }
                     var feedback by remember { mutableStateOf<String?>(null) }
 
@@ -605,5 +593,51 @@ fun GapAttackPhaseFlow(
                 else -> {}
             }
         }
+    }
+}
+
+@Composable
+fun SingleConceptPhaseScreen(
+    mascotDialog: String,
+    label: String,
+    labelColor: Color,
+    body: String,
+    ctaText: String,
+    onNext: () -> Unit
+) {
+    val theme = getAppThemeColors()
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            DuoNinjaMascot(
+                mood = "FOCUS",
+                dialogText = mascotDialog
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(theme.cardBackground)
+                    .border(2.dp, labelColor, RoundedCornerShape(20.dp))
+                    .padding(22.dp)
+            ) {
+                Column {
+                    Text(label, color = labelColor, style = HelveticaSmall)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Text(body, color = theme.textPrimary, style = HelveticaSubtitle)
+                }
+            }
+        }
+
+        Duo3DButton(
+            text = ctaText,
+            buttonColor = ReflectRed,
+            shadowColor = ReflectRedDark,
+            onClick = onNext
+        )
     }
 }
