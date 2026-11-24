@@ -1,5 +1,9 @@
 package com.leetlingo.app.ui.screens
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,6 +30,7 @@ import com.leetlingo.app.ui.theme.*
 enum class OnboardingStep {
     WELCOME,
     AUTH,
+    PERMISSIONS,
     LEETCODE_URL,
     SURVEY_LEVEL,
     SURVEY_GOAL,
@@ -52,11 +57,18 @@ fun OnboardingScreen(
 
     val progressFraction = when (step) {
         OnboardingStep.WELCOME -> 0.10f
-        OnboardingStep.AUTH -> 0.25f
-        OnboardingStep.LEETCODE_URL -> 0.45f
-        OnboardingStep.SURVEY_LEVEL -> 0.65f
+        OnboardingStep.AUTH -> 0.22f
+        OnboardingStep.PERMISSIONS -> 0.36f
+        OnboardingStep.LEETCODE_URL -> 0.50f
+        OnboardingStep.SURVEY_LEVEL -> 0.68f
         OnboardingStep.SURVEY_GOAL -> 0.85f
         OnboardingStep.SURVEY_TARGET -> 1.0f
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) {
+        step = OnboardingStep.LEETCODE_URL
     }
 
     Column(
@@ -131,7 +143,7 @@ fun OnboardingScreen(
                             buttonColor = theme.cardBackground,
                             shadowColor = theme.border,
                             textColor = theme.textPrimary,
-                            onClick = { step = OnboardingStep.LEETCODE_URL }
+                            onClick = { step = OnboardingStep.PERMISSIONS }
                         )
 
                         Spacer(modifier = Modifier.height(18.dp))
@@ -180,6 +192,34 @@ fun OnboardingScreen(
                                 .clickable { isSignUp = !isSignUp }
                                 .padding(vertical = 6.dp)
                         )
+                    }
+                }
+
+                OnboardingStep.PERMISSIONS -> {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        DuoNinjaMascot(
+                            mood = "HAPPY",
+                            dialogText = "Grant permissions so LeetLingo can protect your daily streak."
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(theme.cardBackground)
+                                .border(2.dp, theme.border, RoundedCornerShape(20.dp))
+                                .padding(20.dp)
+                        ) {
+                            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                                Text("Notifications", color = AscendGreen, style = HelveticaSubtitle)
+                                Text(
+                                    "Used for daily streak reminders and spaced-repetition nudges.",
+                                    color = theme.textSecondary,
+                                    style = HelveticaBody
+                                )
+                            }
+                        }
                     }
                 }
 
@@ -279,7 +319,22 @@ fun OnboardingScreen(
                     buttonColor = AscendGreen,
                     shadowColor = AscendGreenDark,
                     enabled = email.isNotBlank() && password.isNotBlank(),
-                    onClick = { step = OnboardingStep.LEETCODE_URL }
+                    onClick = { step = OnboardingStep.PERMISSIONS }
+                )
+            }
+
+            OnboardingStep.PERMISSIONS -> {
+                Duo3DButton(
+                    text = "Allow Permissions",
+                    buttonColor = AscendGreen,
+                    shadowColor = AscendGreenDark,
+                    onClick = {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            permissionLauncher.launch(arrayOf(Manifest.permission.POST_NOTIFICATIONS))
+                        } else {
+                            step = OnboardingStep.LEETCODE_URL
+                        }
+                    }
                 )
             }
 
