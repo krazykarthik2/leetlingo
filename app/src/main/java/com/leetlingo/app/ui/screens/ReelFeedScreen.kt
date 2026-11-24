@@ -528,19 +528,7 @@ fun ReelItemFluid(
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                // Topic Pill
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(ReelBlue.copy(alpha = 0.15f))
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                ) {
-                    Text(problem.topic.replaceFirstChar { it.uppercase() }, color = ReelBlue, style = HelveticaSmall)
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Ninja Mascot Speech
+                // Ninja Mascot Speech (No topic/technique spoiler)
                 DuoNinjaMascot(
                     mood = "FOCUS",
                     dialogText = problem.statement
