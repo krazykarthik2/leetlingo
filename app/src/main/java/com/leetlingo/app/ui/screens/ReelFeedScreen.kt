@@ -52,6 +52,8 @@ sealed class FeedItem {
 @Composable
 fun ReelFeedScreen(
     problems: List<ReelProblem>,
+    streakCount: Int = 7,
+    streakActiveToday: Boolean = false,
     onSaveToVault: (ReelProblem, String) -> Unit,
     onTooHardBail: (ReelProblem) -> Unit
 ) {
@@ -113,14 +115,19 @@ fun ReelFeedScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                val streakColor = if (streakActiveToday) VaultYellow else ReflectRed
                 Icon(
                     imageVector = Icons.Filled.LocalFireDepartment,
                     contentDescription = "Streak",
-                    tint = VaultYellow,
+                    tint = streakColor,
                     modifier = Modifier.size(22.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("7", color = VaultYellow, style = HelveticaSubtitle)
+                Text(
+                    text = if (streakActiveToday) "$streakCount" else "$streakCount • In Danger",
+                    color = streakColor,
+                    style = HelveticaSubtitle
+                )
             }
             // Pro Ad-Free Pill / Status Indicator
             Box(

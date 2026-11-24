@@ -48,6 +48,16 @@ fun LeetLingoMainScreen() {
     var currentTab by remember { mutableStateOf(AppTab.REEL) }
     val vaultItems = remember { mutableStateListOf<VaultItem>() }
 
+    var streakCount by remember { mutableIntStateOf(7) }
+    var streakActiveToday by remember { mutableStateOf(false) }
+
+    val completeDailyAction = {
+        if (!streakActiveToday) {
+            streakActiveToday = true
+            streakCount += 1
+        }
+    }
+
     Scaffold(
         bottomBar = {
             Row(
@@ -90,7 +100,10 @@ fun LeetLingoMainScreen() {
             when (currentTab) {
                 AppTab.REEL -> ReelFeedScreen(
                     problems = reels,
+                    streakCount = streakCount,
+                    streakActiveToday = streakActiveToday,
                     onSaveToVault = { problem, pseudo ->
+                        completeDailyAction()
                         vaultItems.add(
                             VaultItem(
                                 problem = problem,
@@ -105,12 +118,15 @@ fun LeetLingoMainScreen() {
 
                 AppTab.REFLECT -> ReflectScreen(
                     profile = weaknessProfile,
-                    onAttackBleed = { currentTab = AppTab.REEL }
+                    onAttackBleed = { completeDailyAction() }
                 )
 
                 AppTab.ASCEND -> AscendScreen(
                     concepts = concepts,
-                    onAbsorbConcept = { currentTab = AppTab.REEL }
+                    onAbsorbConcept = {
+                        completeDailyAction()
+                        currentTab = AppTab.REEL
+                    }
                 )
 
                 AppTab.VAULT -> VaultScreen(
@@ -120,6 +136,8 @@ fun LeetLingoMainScreen() {
                 )
 
                 AppTab.ACCOUNT -> AccountScreen(
+                    streakCount = streakCount,
+                    streakActiveToday = streakActiveToday,
                     onOpenSettings = {}
                 )
             }

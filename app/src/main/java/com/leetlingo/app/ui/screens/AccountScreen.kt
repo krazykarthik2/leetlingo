@@ -22,6 +22,8 @@ import com.leetlingo.app.ui.theme.*
 
 @Composable
 fun AccountScreen(
+    streakCount: Int = 7,
+    streakActiveToday: Boolean = false,
     onOpenSettings: () -> Unit
 ) {
     var showSettings by remember { mutableStateOf(false) }
@@ -86,14 +88,19 @@ fun AccountScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
+                            val streakColor = if (streakActiveToday) VaultYellow else ReflectRed
                             Icon(
                                 imageVector = Icons.Filled.LocalFireDepartment,
                                 contentDescription = "Streak",
-                                tint = VaultYellow,
+                                tint = streakColor,
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("7d Streak", color = VaultYellow, style = HelveticaSubtitle)
+                            Text(
+                                text = if (streakActiveToday) "${streakCount}d Streak" else "${streakCount}d • In Danger",
+                                color = streakColor,
+                                style = HelveticaSubtitle
+                            )
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(

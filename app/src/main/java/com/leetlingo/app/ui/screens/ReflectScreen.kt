@@ -128,6 +128,7 @@ fun ReflectScreen(
                 val prev = patchedBoosts[activeTopic.name] ?: 0
                 patchedBoosts = patchedBoosts + (activeTopic.name to (prev + 12))
                 currentPhase = GapAttackPhase.OVERVIEW
+                onAttackBleed(activeTopic.name)
             },
             onClose = { currentPhase = GapAttackPhase.OVERVIEW }
         )
