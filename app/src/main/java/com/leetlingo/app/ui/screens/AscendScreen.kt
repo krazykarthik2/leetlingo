@@ -76,29 +76,13 @@ fun AscendScreen(
                         .padding(18.dp)
                 ) {
                     Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(AscendGreen.copy(alpha = 0.15f))
+                                .padding(horizontal = 10.dp, vertical = 4.dp)
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(AscendGreen.copy(alpha = 0.15f))
-                                    .padding(horizontal = 10.dp, vertical = 4.dp)
-                            ) {
-                                Text(concept.topic.replaceFirstChar { it.uppercase() }, color = AscendGreen, style = HelveticaSmall)
-                            }
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(
-                                    imageVector = Icons.Filled.Lightbulb,
-                                    contentDescription = "Core Concept",
-                                    tint = VaultYellow,
-                                    modifier = Modifier.size(16.dp)
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("High Yield", color = theme.textMuted, style = HelveticaSmall)
-                            }
+                            Text(concept.topic.replaceFirstChar { it.uppercase() }, color = AscendGreen, style = HelveticaSmall)
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))

@@ -205,18 +205,11 @@ fun ReflectScreen(
                                         style = HelveticaSubtitle
                                     )
                                 }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(
-                                        text = "${topic.won}/${topic.attempted} won  •  ",
-                                        color = theme.textMuted,
-                                        style = HelveticaSmall
-                                    )
-                                    Text(
-                                        text = "${topic.masteryScore}%",
-                                        color = if (topic.masteryScore < 50) ReflectRed else theme.textPrimary,
-                                        style = HelveticaSmall
-                                    )
-                                }
+                                Text(
+                                    text = "${topic.masteryScore}%",
+                                    color = if (topic.masteryScore < 50) ReflectRed else theme.textPrimary,
+                                    style = HelveticaSmall
+                                )
                             }
                             Spacer(modifier = Modifier.height(6.dp))
                             LinearProgressIndicator(
@@ -246,22 +239,11 @@ fun ReflectScreen(
                         .padding(14.dp)
                 ) {
                     Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = if (topic.isBiggestBleed) "Critical Gap: ${topic.name}" else "Diagnostic: ${topic.name}",
-                                color = if (topic.isBiggestBleed) ReflectRed else theme.textPrimary,
-                                style = HelveticaSmall
-                            )
-                            Text(
-                                text = "${100 - topic.masteryScore}% Leak Rate",
-                                color = if (topic.isBiggestBleed) ReflectRed else theme.textMuted,
-                                style = HelveticaSmall
-                            )
-                        }
+                        Text(
+                            text = if (topic.isBiggestBleed) "Critical Gap: ${topic.name}" else "Diagnostic: ${topic.name}",
+                            color = if (topic.isBiggestBleed) ReflectRed else theme.textPrimary,
+                            style = HelveticaSmall
+                        )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = if (topic.isBiggestBleed) {
