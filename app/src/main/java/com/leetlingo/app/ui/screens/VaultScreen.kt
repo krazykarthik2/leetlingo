@@ -1,6 +1,7 @@
 package com.leetlingo.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leetlingo.app.data.model.MemoryState
 import com.leetlingo.app.data.model.VaultItem
-import com.leetlingo.app.ui.components.DuoChunkyButton
+import com.leetlingo.app.ui.components.Duo3DButton
 import com.leetlingo.app.ui.theme.*
 
 @Composable
@@ -38,34 +39,44 @@ fun VaultScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(VaultBackground)
+            .background(DuoPolar)
             .padding(16.dp)
     ) {
+        // Top Header
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("🏛️ VAULT", color = VaultAmber, fontWeight = FontWeight.Black, fontSize = 20.sp)
-            Text("${vaultItems.size} Won", color = Color(0xFF94A3B8), fontSize = 14.sp)
+            Text("VAULT", color = VaultYellowDark, fontWeight = FontWeight.Black, fontSize = 22.sp)
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(VaultYellowLight)
+                    .border(2.dp, VaultYellow, RoundedCornerShape(12.dp))
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Text("${vaultItems.size} CONQUERED", color = VaultYellowDark, fontWeight = FontWeight.Black, fontSize = 11.sp)
+            }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
-        // Filter chips
+        // Duolingo Filter Pills
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             listOf("ALL", "FADING", "COLD", "CONQUERED").forEach { filter ->
                 val isSelected = selectedFilter == filter
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(if (isSelected) VaultAmber else Color(0xFF1F1F1F))
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(if (isSelected) VaultYellow else DuoSnow)
+                        .border(2.dp, if (isSelected) VaultYellowDark else DuoSwan, RoundedCornerShape(14.dp))
                         .clickable { selectedFilter = filter }
                         .padding(horizontal = 14.dp, vertical = 6.dp)
                 ) {
                     Text(
                         text = filter,
-                        color = if (isSelected) Color.Black else Color(0xFF94A3B8),
+                        color = if (isSelected) DuoSnow else DuoWolf,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -73,45 +84,49 @@ fun VaultScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
         if (filteredItems.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("No problems in this filter yet. Crack reels to fill your Vault!", color = Color(0xFF64748B))
+                Text("Your vault is currently empty.\nCrack Katas in Reel mode to save them!", color = DuoWolf, fontWeight = FontWeight.Bold)
             }
         } else {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(filteredItems) { item ->
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(containerColor = VaultCardBackground)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(18.dp))
+                            .background(DuoSnow)
+                            .border(2.dp, DuoSwan, RoundedCornerShape(18.dp))
+                            .padding(16.dp)
                     ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
+                        Column {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(item.problem.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                Text(item.problem.title, color = DuoEel, fontWeight = FontWeight.Black, fontSize = 16.sp)
                                 val (statusText, statusCol) = when (item.memoryState) {
-                                    MemoryState.FRESH -> "🟢 Fresh" to AscendGreen
-                                    MemoryState.FADING -> "⚠️ Fading" to Color(0xFFFFC800)
-                                    MemoryState.COLD -> "🔴 Cold" to ReflectRed
-                                    MemoryState.CONQUERED -> "✅ Done" to ReelBlueGlow
+                                    MemoryState.FRESH -> "Fresh" to AscendGreen
+                                    MemoryState.FADING -> "Fading" to VaultYellowDark
+                                    MemoryState.COLD -> "Cold" to ReflectRed
+                                    MemoryState.CONQUERED -> "Done" to ReelBlue
                                 }
                                 Text(statusText, color = statusCol, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
 
                             Spacer(modifier = Modifier.height(6.dp))
-                            Text("Your pseudo logic:", color = Color(0xFF94A3B8), fontSize = 12.sp)
-                            Text(item.userPseudoCode, color = Color(0xFFE2E8F0), fontSize = 13.sp, maxLines = 2)
+                            Text("Your verified pseudo:", color = DuoWolf, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text(item.userPseudoCode, color = DuoEel, fontSize = 13.sp, maxLines = 2, fontWeight = FontWeight.Medium)
 
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            DuoChunkyButton(
-                                text = "🚀 CODE ON LEETCODE (No spoilers)",
-                                buttonColor = VaultAmber,
-                                textColor = Color.Black,
+                            Duo3DButton(
+                                text = "Code on LeetCode",
+                                buttonColor = VaultYellow,
+                                shadowColor = VaultYellowDark,
+                                textColor = DuoSnow,
                                 onClick = { onLaunchLeetCode(item) }
                             )
                         }

@@ -1,0 +1,423 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.leetlingo.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="35" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:4:5-67
+11-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:4:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:26:5-79
+12-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:26:22-76
+13    <uses-permission android:name="android.permission.WAKE_LOCK" />
+13-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:25:5-68
+13-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:25:22-65
+14    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+14-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:26:5-110
+14-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:26:22-107
+15    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+15-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:25:5-79
+15-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:25:22-76
+16    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION" />
+16-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:26:5-88
+16-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:26:22-85
+17    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" />
+17-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:27:5-82
+17-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:27:22-79
+18    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+18-->[com.google.android.recaptcha:recaptcha:18.5.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8ba0700d10a4658b3dd135025af75269\transformed\recaptcha-18.5.1\AndroidManifest.xml:9:5-98
+18-->[com.google.android.recaptcha:recaptcha:18.5.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8ba0700d10a4658b3dd135025af75269\transformed\recaptcha-18.5.1\AndroidManifest.xml:9:22-95
+19
+20    <permission
+20-->[androidx.core:core:1.15.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\231e11b10dfbf3abbcba3cac6ad36657\transformed\core-1.15.0\AndroidManifest.xml:22:5-24:47
+21        android:name="com.leetlingo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+21-->[androidx.core:core:1.15.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\231e11b10dfbf3abbcba3cac6ad36657\transformed\core-1.15.0\AndroidManifest.xml:23:9-81
+22        android:protectionLevel="signature" />
+22-->[androidx.core:core:1.15.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\231e11b10dfbf3abbcba3cac6ad36657\transformed\core-1.15.0\AndroidManifest.xml:24:9-44
+23
+24    <uses-permission android:name="com.leetlingo.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+24-->[androidx.core:core:1.15.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\231e11b10dfbf3abbcba3cac6ad36657\transformed\core-1.15.0\AndroidManifest.xml:26:5-97
+24-->[androidx.core:core:1.15.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\231e11b10dfbf3abbcba3cac6ad36657\transformed\core-1.15.0\AndroidManifest.xml:26:22-94
+25
+26    <application
+26-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:6:5-22:19
+27        android:allowBackup="true"
+27-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:7:9-35
+28        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+28-->[androidx.core:core:1.15.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\231e11b10dfbf3abbcba3cac6ad36657\transformed\core-1.15.0\AndroidManifest.xml:28:18-86
+29        android:debuggable="true"
+30        android:extractNativeLibs="false"
+31        android:icon="@android:drawable/sym_def_app_icon"
+31-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:8:9-58
+32        android:label="LeetLingo"
+32-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:9:9-34
+33        android:roundIcon="@android:drawable/sym_def_app_icon"
+33-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:10:9-63
+34        android:supportsRtl="true"
+34-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:11:9-35
+35        android:theme="@android:style/Theme.Material.NoActionBar" >
+35-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:12:9-66
+36        <activity
+36-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:13:9-21:20
+37            android:name="com.leetlingo.app.MainActivity"
+37-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:14:13-41
+38            android:exported="true"
+38-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:15:13-36
+39            android:theme="@android:style/Theme.Material.NoActionBar" >
+39-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:16:13-70
+40            <intent-filter>
+40-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:17:13-20:29
+41                <action android:name="android.intent.action.MAIN" />
+41-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:18:17-69
+41-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:18:25-66
+42
+43                <category android:name="android.intent.category.LAUNCHER" />
+43-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:19:17-77
+43-->C:\Users\karthikkrazy\Downloads\leetlingo\app\src\main\AndroidManifest.xml:19:27-74
+44            </intent-filter>
+45        </activity>
+46        <activity
+46-->[androidx.compose.ui:ui-tooling-android:1.7.5] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c4069a5904f18ee4ddbc099f018e6744\transformed\ui-tooling-release\AndroidManifest.xml:23:9-25:39
+47            android:name="androidx.compose.ui.tooling.PreviewActivity"
+47-->[androidx.compose.ui:ui-tooling-android:1.7.5] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c4069a5904f18ee4ddbc099f018e6744\transformed\ui-tooling-release\AndroidManifest.xml:24:13-71
+48            android:exported="true" />
+48-->[androidx.compose.ui:ui-tooling-android:1.7.5] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c4069a5904f18ee4ddbc099f018e6744\transformed\ui-tooling-release\AndroidManifest.xml:25:13-36
+49        <activity
+49-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:29:9-46:20
+50            android:name="com.google.firebase.auth.internal.GenericIdpActivity"
+50-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:30:13-80
+51            android:excludeFromRecents="true"
+51-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:31:13-46
+52            android:exported="true"
+52-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:32:13-36
+53            android:launchMode="singleTask"
+53-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:33:13-44
+54            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+54-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:34:13-72
+55            <intent-filter>
+55-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:35:13-45:29
+56                <action android:name="android.intent.action.VIEW" />
+56-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:36:17-69
+56-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:36:25-66
+57
+58                <category android:name="android.intent.category.DEFAULT" />
+58-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:38:17-76
+58-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:38:27-73
+59                <category android:name="android.intent.category.BROWSABLE" />
+59-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:39:17-78
+59-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:39:27-75
+60
+61                <data
+61-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:41:17-44:51
+62                    android:host="firebase.auth"
+62-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:42:21-49
+63                    android:path="/"
+63-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:43:21-37
+64                    android:scheme="genericidp" />
+64-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:44:21-48
+65            </intent-filter>
+66        </activity>
+67        <activity
+67-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:47:9-64:20
+68            android:name="com.google.firebase.auth.internal.RecaptchaActivity"
+68-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:48:13-79
+69            android:excludeFromRecents="true"
+69-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:49:13-46
+70            android:exported="true"
+70-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:50:13-36
+71            android:launchMode="singleTask"
+71-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:51:13-44
+72            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+72-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:52:13-72
+73            <intent-filter>
+73-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:53:13-63:29
+74                <action android:name="android.intent.action.VIEW" />
+74-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:36:17-69
+74-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:36:25-66
+75
+76                <category android:name="android.intent.category.DEFAULT" />
+76-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:38:17-76
+76-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:38:27-73
+77                <category android:name="android.intent.category.BROWSABLE" />
+77-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:39:17-78
+77-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:39:27-75
+78
+79                <data
+79-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:41:17-44:51
+80                    android:host="firebase.auth"
+80-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:42:21-49
+81                    android:path="/"
+81-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:43:21-37
+82                    android:scheme="recaptcha" />
+82-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:44:21-48
+83            </intent-filter>
+84        </activity>
+85
+86        <service
+86-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:66:9-72:19
+87            android:name="com.google.firebase.components.ComponentDiscoveryService"
+87-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:67:13-84
+88            android:directBootAware="true"
+88-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:32:13-43
+89            android:exported="false" >
+89-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:68:13-37
+90            <meta-data
+90-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:69:13-71:85
+91                android:name="com.google.firebase.components:com.google.firebase.auth.FirebaseAuthRegistrar"
+91-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:70:17-109
+92                android:value="com.google.firebase.components.ComponentRegistrar" />
+92-->[com.google.firebase:firebase-auth:23.1.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\c7d0906a5873bc76bbb4eeff99704f5b\transformed\firebase-auth-23.1.0\AndroidManifest.xml:71:17-82
+93            <meta-data
+93-->[com.google.firebase:firebase-firestore:25.1.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\fc50a293a57199a67ee586fc15bcfaf4\transformed\firebase-firestore-25.1.1\AndroidManifest.xml:17:13-19:85
+94                android:name="com.google.firebase.components:com.google.firebase.firestore.FirebaseFirestoreKtxRegistrar"
+94-->[com.google.firebase:firebase-firestore:25.1.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\fc50a293a57199a67ee586fc15bcfaf4\transformed\firebase-firestore-25.1.1\AndroidManifest.xml:18:17-122
+95                android:value="com.google.firebase.components.ComponentRegistrar" />
+95-->[com.google.firebase:firebase-firestore:25.1.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\fc50a293a57199a67ee586fc15bcfaf4\transformed\firebase-firestore-25.1.1\AndroidManifest.xml:19:17-82
+96            <meta-data
+96-->[com.google.firebase:firebase-firestore:25.1.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\fc50a293a57199a67ee586fc15bcfaf4\transformed\firebase-firestore-25.1.1\AndroidManifest.xml:20:13-22:85
+97                android:name="com.google.firebase.components:com.google.firebase.firestore.FirestoreRegistrar"
+97-->[com.google.firebase:firebase-firestore:25.1.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\fc50a293a57199a67ee586fc15bcfaf4\transformed\firebase-firestore-25.1.1\AndroidManifest.xml:21:17-111
+98                android:value="com.google.firebase.components.ComponentRegistrar" />
+98-->[com.google.firebase:firebase-firestore:25.1.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\fc50a293a57199a67ee586fc15bcfaf4\transformed\firebase-firestore-25.1.1\AndroidManifest.xml:22:17-82
+99            <meta-data
+99-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:37:13-39:85
+100                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+100-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:38:17-139
+101                android:value="com.google.firebase.components.ComponentRegistrar" />
+101-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:39:17-82
+102            <meta-data
+102-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\481bc3d3a99cace9ce8d94820033b28b\transformed\firebase-installations-18.0.0\AndroidManifest.xml:15:13-17:85
+103                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsKtxRegistrar"
+103-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\481bc3d3a99cace9ce8d94820033b28b\transformed\firebase-installations-18.0.0\AndroidManifest.xml:16:17-130
+104                android:value="com.google.firebase.components.ComponentRegistrar" />
+104-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\481bc3d3a99cace9ce8d94820033b28b\transformed\firebase-installations-18.0.0\AndroidManifest.xml:17:17-82
+105            <meta-data
+105-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\481bc3d3a99cace9ce8d94820033b28b\transformed\firebase-installations-18.0.0\AndroidManifest.xml:18:13-20:85
+106                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+106-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\481bc3d3a99cace9ce8d94820033b28b\transformed\firebase-installations-18.0.0\AndroidManifest.xml:19:17-127
+107                android:value="com.google.firebase.components.ComponentRegistrar" />
+107-->[com.google.firebase:firebase-installations:18.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\481bc3d3a99cace9ce8d94820033b28b\transformed\firebase-installations-18.0.0\AndroidManifest.xml:20:17-82
+108            <meta-data
+108-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\f7fe0ad581cde7f187cc412446698da6\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:12:13-14:85
+109                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonLegacyRegistrar"
+109-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\f7fe0ad581cde7f187cc412446698da6\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:13:17-116
+110                android:value="com.google.firebase.components.ComponentRegistrar" />
+110-->[com.google.firebase:firebase-common-ktx:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\f7fe0ad581cde7f187cc412446698da6\transformed\firebase-common-ktx-21.0.0\AndroidManifest.xml:14:17-82
+111            <meta-data
+111-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:35:13-37:85
+112                android:name="com.google.firebase.components:com.google.firebase.FirebaseCommonKtxRegistrar"
+112-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:36:17-109
+113                android:value="com.google.firebase.components.ComponentRegistrar" />
+113-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:37:17-82
+114        </service>
+115
+116        <receiver
+116-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:29:9-33:20
+117            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+117-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:30:13-85
+118            android:enabled="true"
+118-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:31:13-35
+119            android:exported="false" >
+119-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:32:13-37
+120        </receiver>
+121
+122        <service
+122-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:35:9-38:40
+123            android:name="com.google.android.gms.measurement.AppMeasurementService"
+123-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:36:13-84
+124            android:enabled="true"
+124-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:37:13-35
+125            android:exported="false" />
+125-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:38:13-37
+126        <service
+126-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:39:9-43:72
+127            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+127-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:40:13-87
+128            android:enabled="true"
+128-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:41:13-35
+129            android:exported="false"
+129-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:42:13-37
+130            android:permission="android.permission.BIND_JOB_SERVICE" />
+130-->[com.google.android.gms:play-services-measurement:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\8e95517a4c3584ab57c2abfc535b9cb8\transformed\play-services-measurement-22.1.2\AndroidManifest.xml:43:13-69
+131
+132        <property
+132-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:30:9-32:61
+133            android:name="android.adservices.AD_SERVICES_CONFIG"
+133-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:31:13-65
+134            android:resource="@xml/ga_ad_services_config" />
+134-->[com.google.android.gms:play-services-measurement-api:22.1.2] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b8543778ae7eed235609e82bbeb46c0b\transformed\play-services-measurement-api-22.1.2\AndroidManifest.xml:32:13-58
+135
+136        <service
+136-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:24:9-32:19
+137            android:name="androidx.credentials.playservices.CredentialProviderMetadataHolder"
+137-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:25:13-94
+138            android:enabled="true"
+138-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:26:13-35
+139            android:exported="false" >
+139-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:27:13-37
+140            <meta-data
+140-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:29:13-31:104
+141                android:name="androidx.credentials.CREDENTIAL_PROVIDER_KEY"
+141-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:30:17-76
+142                android:value="androidx.credentials.playservices.CredentialProviderPlayServicesImpl" />
+142-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:31:17-101
+143        </service>
+144
+145        <activity
+145-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:34:9-41:20
+146            android:name="androidx.credentials.playservices.HiddenActivity"
+146-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:35:13-76
+147            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+147-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:36:13-87
+148            android:enabled="true"
+148-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:37:13-35
+149            android:exported="false"
+149-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:38:13-37
+150            android:fitsSystemWindows="true"
+150-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:39:13-45
+151            android:theme="@style/Theme.Hidden" >
+151-->[androidx.credentials:credentials-play-services-auth:1.2.0-rc01] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\5c69858db5bec6b4bc6f58a8b8bdca7d\transformed\credentials-play-services-auth-1.2.0-rc01\AndroidManifest.xml:40:13-48
+152        </activity>
+153        <activity
+153-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:23:9-27:75
+154            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+154-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:24:13-93
+155            android:excludeFromRecents="true"
+155-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:25:13-46
+156            android:exported="false"
+156-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:26:13-37
+157            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+157-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:27:13-72
+158        <!--
+159            Service handling Google Sign-In user revocation. For apps that do not integrate with
+160            Google Sign-In, this service will never be started.
+161        -->
+162        <service
+162-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:33:9-37:51
+163            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+163-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:34:13-89
+164            android:exported="true"
+164-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:35:13-36
+165            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+165-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:36:13-107
+166            android:visibleToInstantApps="true" />
+166-->[com.google.android.gms:play-services-auth:20.7.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b5525c5d5278d73c5363cc10b8b66b61\transformed\play-services-auth-20.7.0\AndroidManifest.xml:37:13-48
+167
+168        <provider
+168-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:23:9-28:39
+169            android:name="com.google.firebase.provider.FirebaseInitProvider"
+169-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:24:13-77
+170            android:authorities="com.leetlingo.app.firebaseinitprovider"
+170-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:25:13-72
+171            android:directBootAware="true"
+171-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:26:13-43
+172            android:exported="false"
+172-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:27:13-37
+173            android:initOrder="100" />
+173-->[com.google.firebase:firebase-common:21.0.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\e095133462bc59024265097ca5c842f8\transformed\firebase-common-21.0.0\AndroidManifest.xml:28:13-36
+174        <provider
+174-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+175            android:name="androidx.startup.InitializationProvider"
+175-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+176            android:authorities="com.leetlingo.app.androidx-startup"
+176-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+177            android:exported="false" >
+177-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+178            <meta-data
+178-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+179                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+179-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+180                android:value="androidx.startup" />
+180-->[androidx.emoji2:emoji2:1.3.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b44ede64da0fd34b5f48d04d33f9275c\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+181            <meta-data
+181-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\f8ed52ca14e2fb62f7b6dc8fadbcfed7\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:29:13-31:52
+182                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+182-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\f8ed52ca14e2fb62f7b6dc8fadbcfed7\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:30:17-78
+183                android:value="androidx.startup" />
+183-->[androidx.lifecycle:lifecycle-process:2.8.7] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\f8ed52ca14e2fb62f7b6dc8fadbcfed7\transformed\lifecycle-process-2.8.7\AndroidManifest.xml:31:17-49
+184            <meta-data
+184-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+185                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+185-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+186                android:value="androidx.startup" />
+186-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+187        </provider>
+188
+189        <uses-library
+189-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\ff9cf45dd84590292208bb434209e988\transformed\ads-adservices-1.0.0-beta05\AndroidManifest.xml:23:9-25:40
+190            android:name="android.ext.adservices"
+190-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\ff9cf45dd84590292208bb434209e988\transformed\ads-adservices-1.0.0-beta05\AndroidManifest.xml:24:13-50
+191            android:required="false" />
+191-->[androidx.privacysandbox.ads:ads-adservices:1.0.0-beta05] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\ff9cf45dd84590292208bb434209e988\transformed\ads-adservices-1.0.0-beta05\AndroidManifest.xml:25:13-37
+192
+193        <activity
+193-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\587100dd8d7c54dc942ec87bf5b0b74f\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+194            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+194-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\587100dd8d7c54dc942ec87bf5b0b74f\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+195            android:exported="false"
+195-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\587100dd8d7c54dc942ec87bf5b0b74f\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+196            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+196-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\587100dd8d7c54dc942ec87bf5b0b74f\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+197
+198        <meta-data
+198-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\825151d4d2f31a2033c1449e1f109620\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+199            android:name="com.google.android.gms.version"
+199-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\825151d4d2f31a2033c1449e1f109620\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
+200            android:value="@integer/google_play_services_version" />
+200-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\825151d4d2f31a2033c1449e1f109620\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+201
+202        <receiver
+202-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+203            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+203-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+204            android:directBootAware="false"
+204-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+205            android:enabled="true"
+205-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+206            android:exported="true"
+206-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+207            android:permission="android.permission.DUMP" >
+207-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+208            <intent-filter>
+208-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+209                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+209-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+209-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+210            </intent-filter>
+211            <intent-filter>
+211-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+212                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+212-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+212-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+213            </intent-filter>
+214            <intent-filter>
+214-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+215                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+215-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+215-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+216            </intent-filter>
+217            <intent-filter>
+217-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+218                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+218-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+218-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\b34354ef5e9c2a8b05469001d614fd35\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+219            </intent-filter>
+220        </receiver> <!-- The activities will be merged into the manifest of the hosting app. -->
+221        <activity
+221-->[com.google.android.play:core-common:2.0.3] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\3eddf4f62a428ef7688974803456197d\transformed\core-common-2.0.3\AndroidManifest.xml:14:9-18:65
+222            android:name="com.google.android.play.core.common.PlayCoreDialogWrapperActivity"
+222-->[com.google.android.play:core-common:2.0.3] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\3eddf4f62a428ef7688974803456197d\transformed\core-common-2.0.3\AndroidManifest.xml:15:13-93
+223            android:exported="false"
+223-->[com.google.android.play:core-common:2.0.3] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\3eddf4f62a428ef7688974803456197d\transformed\core-common-2.0.3\AndroidManifest.xml:16:13-37
+224            android:stateNotNeeded="true"
+224-->[com.google.android.play:core-common:2.0.3] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\3eddf4f62a428ef7688974803456197d\transformed\core-common-2.0.3\AndroidManifest.xml:17:13-42
+225            android:theme="@style/Theme.PlayCore.Transparent" />
+225-->[com.google.android.play:core-common:2.0.3] C:\Users\karthikkrazy\.gradle\caches\8.9\transforms\3eddf4f62a428ef7688974803456197d\transformed\core-common-2.0.3\AndroidManifest.xml:18:13-62
+226    </application>
+227
+228</manifest>

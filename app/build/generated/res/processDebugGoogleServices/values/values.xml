@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">1029564057282</string>
+    <string name="google_api_key" translatable="false">AIzaSyBqFUOgE-kn3lDAGUCd68G_I7vcMbCOzSE</string>
+    <string name="google_app_id" translatable="false">1:1029564057282:android:7ed8cbde29a5794f1cdd5b</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBqFUOgE-kn3lDAGUCd68G_I7vcMbCOzSE</string>
+    <string name="google_storage_bucket" translatable="false">leetlingo-5d54e.firebasestorage.app</string>
+    <string name="project_id" translatable="false">leetlingo-5d54e</string>
+</resources>

@@ -23,8 +23,8 @@ enum class AppTab(val title: String, val icon: String, val activeColor: Color) {
     REEL("Reel", "🎬", ReelBlue),
     REFLECT("Reflect", "🪞", ReflectRed),
     ASCEND("Ascend", "🚀", AscendGreen),
-    VAULT("Vault", "🏛️", VaultAmber),
-    ACCOUNT("Account", "👤", AccountTextWhite)
+    VAULT("Vault", "🏛️", VaultYellow),
+    ACCOUNT("Account", "👤", AccountColor)
 }
 
 @Composable
@@ -41,12 +41,13 @@ fun LeetLingoMainScreen() {
 
     Scaffold(
         bottomBar = {
+            // Duolingo Style Clean White Bottom Navigation
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(68.dp)
-                    .background(Color(0xFF030712))
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                    .background(DuoSnow)
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -65,9 +66,9 @@ fun LeetLingoMainScreen() {
                         )
                         Text(
                             text = tab.title,
-                            color = if (isSelected) tab.activeColor else Color(0xFF64748B),
+                            color = if (isSelected) tab.activeColor else DuoWolf,
                             fontSize = 11.sp,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            fontWeight = if (isSelected) FontWeight.Black else FontWeight.Bold
                         )
                     }
                 }
@@ -89,7 +90,7 @@ fun LeetLingoMainScreen() {
                         )
                     },
                     onTooHardBail = {
-                        // Ingest into Reflect queue
+                        // Handled in Reflect
                     }
                 )
 
@@ -110,7 +111,7 @@ fun LeetLingoMainScreen() {
                 AppTab.VAULT -> VaultScreen(
                     vaultItems = vaultItems,
                     onLaunchLeetCode = {
-                        // Open external LeetCode intent
+                        // Launch LeetCode
                     },
                     onReattemptL2 = {
                         currentTab = AppTab.REEL

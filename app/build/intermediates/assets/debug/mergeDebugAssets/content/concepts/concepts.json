@@ -1,0 +1,30 @@
+[
+  {
+    "id": "concept_001",
+    "name": "Monotonic Stack",
+    "topic": "Stack & Greedy",
+    "tagline": "Next Greater Element in O(n) Time",
+    "coreIdea": "A stack maintained strictly in monotonic (increasing or decreasing) order. Whenever a new element violates the order, you pop until the condition holds.",
+    "whenToUse": [
+      "Find the next greater/smaller element for every element",
+      "Maximum rectangle in histogram",
+      "Daily temperatures / Stock span problem"
+    ],
+    "prerequisites": ["Standard Stack", "Array Iteration"],
+    "practiceReelIds": ["reel_003"]
+  },
+  {
+    "id": "concept_002",
+    "name": "Trie (Prefix Tree)",
+    "topic": "Trees & Strings",
+    "tagline": "Blazing fast prefix queries and autocomplete",
+    "coreIdea": "A tree where each node represents a character. Shared prefixes share branches, enabling O(L) search time where L is word length.",
+    "whenToUse": [
+      "Prefix searching (startsWith)",
+      "Dictionary word validation",
+      "Bitwise maximum XOR queries"
+    ],
+    "prerequisites": ["Hash Maps", "Tree Nodes"],
+    "practiceReelIds": ["reel_001"]
+  }
+]
