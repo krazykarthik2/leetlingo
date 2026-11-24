@@ -1,6 +1,7 @@
 package com.leetlingo.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leetlingo.app.data.model.MemoryState
@@ -31,6 +31,7 @@ enum class AppTab(val title: String, val icon: String, val activeColor: Color) {
 fun LeetLingoMainScreen() {
     val context = LocalContext.current
     val repository = remember { ContentRepository(context) }
+    val theme = getAppThemeColors()
 
     val reels = remember { repository.loadReels() }
     val concepts = remember { repository.loadConcepts() }
@@ -41,12 +42,13 @@ fun LeetLingoMainScreen() {
 
     Scaffold(
         bottomBar = {
-            // Duolingo Style Clean White Bottom Navigation
+            // Duolingo Style Bottom Navigation adapting to system dark/light
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(68.dp)
-                    .background(DuoSnow)
+                    .background(theme.bottomBarBackground)
+                    .border(1.dp, theme.border.copy(alpha = 0.5f))
                     .padding(horizontal = 8.dp, vertical = 6.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
@@ -66,9 +68,8 @@ fun LeetLingoMainScreen() {
                         )
                         Text(
                             text = tab.title,
-                            color = if (isSelected) tab.activeColor else DuoWolf,
-                            fontSize = 11.sp,
-                            fontWeight = if (isSelected) FontWeight.Black else FontWeight.Bold
+                            color = if (isSelected) tab.activeColor else theme.textMuted,
+                            style = HelveticaSmall
                         )
                     }
                 }
@@ -89,33 +90,23 @@ fun LeetLingoMainScreen() {
                             )
                         )
                     },
-                    onTooHardBail = {
-                        // Handled in Reflect
-                    }
+                    onTooHardBail = {}
                 )
 
                 AppTab.REFLECT -> ReflectScreen(
                     profile = weaknessProfile,
-                    onAttackBleed = {
-                        currentTab = AppTab.REEL
-                    }
+                    onAttackBleed = { currentTab = AppTab.REEL }
                 )
 
                 AppTab.ASCEND -> AscendScreen(
                     concepts = concepts,
-                    onAbsorbConcept = {
-                        currentTab = AppTab.REEL
-                    }
+                    onAbsorbConcept = { currentTab = AppTab.REEL }
                 )
 
                 AppTab.VAULT -> VaultScreen(
                     vaultItems = vaultItems,
-                    onLaunchLeetCode = {
-                        // Launch LeetCode
-                    },
-                    onReattemptL2 = {
-                        currentTab = AppTab.REEL
-                    }
+                    onLaunchLeetCode = {},
+                    onReattemptL2 = { currentTab = AppTab.REEL }
                 )
 
                 AppTab.ACCOUNT -> AccountScreen(

@@ -4,9 +4,10 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.pager.VerticalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -38,215 +39,253 @@ fun ReelFeedScreen(
     onSaveToVault: (ReelProblem, String) -> Unit,
     onTooHardBail: (ReelProblem) -> Unit
 ) {
+    val theme = getAppThemeColors()
+
     if (problems.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize().background(DuoPolar),
+            modifier = Modifier.fillMaxSize().background(theme.background),
             contentAlignment = Alignment.Center
         ) {
-            Text("Ingesting algorithm katas...", color = DuoWolf, fontWeight = FontWeight.Bold)
+            Text("Ingesting Katas...", color = theme.textMuted, style = HelveticaSubtitle)
         }
         return
     }
 
-    var currentIndex by remember { mutableStateOf(0) }
+    // Instagram Reel style vertical pager state with preloading
+    val pagerState = rememberPagerState(pageCount = { problems.size })
+    var activeSolveProblem by remember { mutableStateOf<ReelProblem?>(null) }
     var currentLevel by remember { mutableStateOf(SolveLevel.REEL_CARD) }
     var userPseudoInput by remember { mutableStateOf("") }
     var feedbackMessage by remember { mutableStateOf<String?>(null) }
-    val currentProblem = problems[currentIndex % problems.size]
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(DuoPolar)
-            .padding(16.dp)
-    ) {
-        when (currentLevel) {
-            SolveLevel.REEL_CARD -> {
-                ReelCardViewDuo(
-                    problem = currentProblem,
-                    onSwipeUpSkip = {
-                        currentIndex++
-                        currentLevel = SolveLevel.REEL_CARD
-                    },
-                    onSwipeRightTooHard = {
-                        onTooHardBail(currentProblem)
-                        currentIndex++
-                        currentLevel = SolveLevel.REEL_CARD
-                    },
-                    onCrackIt = {
-                        currentLevel = SolveLevel.L1_APPROACH
-                    }
-                )
-            }
-
-            SolveLevel.L1_APPROACH -> {
-                L1ApproachViewDuo(
-                    problem = currentProblem,
-                    onCorrectApproach = {
-                        currentLevel = SolveLevel.L2_PSEUDO
-                    },
-                    onClose = { currentLevel = SolveLevel.REEL_CARD }
-                )
-            }
-
-            SolveLevel.L2_PSEUDO -> {
-                L2PseudoViewDuo(
-                    problem = currentProblem,
-                    pseudoText = userPseudoInput,
-                    feedback = feedbackMessage,
-                    onPseudoChange = { userPseudoInput = it },
-                    onVerify = {
-                        val lower = userPseudoInput.lowercase()
-                        val matches = currentProblem.pseudoKeywords.count { lower.contains(it) }
-                        if (matches >= 2) {
-                            feedbackMessage = "Correct logic! You unlocked the clean code."
-                            currentLevel = SolveLevel.L2_WIN_PYTHON
-                        } else {
-                            feedbackMessage = "Needs work. Hint: ${currentProblem.pseudoHint}"
-                        }
-                    },
-                    onClose = { currentLevel = SolveLevel.REEL_CARD }
-                )
-            }
-
-            SolveLevel.L2_WIN_PYTHON -> {
-                L2WinPythonViewDuo(
-                    problem = currentProblem,
-                    onSaveVaultAndContinue = {
-                        onSaveToVault(currentProblem, userPseudoInput)
-                        userPseudoInput = ""
-                        feedbackMessage = null
-                        currentIndex++
-                        currentLevel = SolveLevel.REEL_CARD
-                    }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun ReelCardViewDuo(
-    problem: ReelProblem,
-    onSwipeUpSkip: () -> Unit,
-    onSwipeRightTooHard: () -> Unit,
-    onCrackIt: () -> Unit
-) {
-    var offsetX by remember { mutableStateOf(0f) }
-    var offsetY by remember { mutableStateOf(0f) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .offset(x = (offsetX / 3).dp, y = (offsetY / 3).dp)
-            .pointerInput(Unit) {
-                detectDragGestures(
-                    onDragEnd = {
-                        if (offsetY < -150f) onSwipeUpSkip()
-                        else if (offsetX > 150f) onSwipeRightTooHard()
-                        offsetX = 0f
-                        offsetY = 0f
-                    },
-                    onDrag = { change, dragAmount ->
-                        change.consume()
-                        offsetX += dragAmount.x
-                        offsetY += dragAmount.y
-                    }
-                )
-            },
-        verticalArrangement = Arrangement.SpaceBetween
+            .background(theme.background)
     ) {
-        // Duolingo Top Header
+        // =================================================================
+        // PINNED INSTAGRAM-STYLE TOP BAR (NEVER MOVES DURING VERTICAL SCROLL)
+        // =================================================================
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(theme.topBarBackground)
+                .padding(horizontal = 20.dp, vertical = 14.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("🔥", fontSize = 20.sp)
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("7", color = DuoBeeYellow, fontWeight = FontWeight.Black, fontSize = 18.sp)
+                Text("7", color = VaultYellow, style = HelveticaSubtitle)
             }
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(12.dp))
-                    .background(Color(0xFFEBF7FD))
-                    .border(2.dp, DuoMacawBlue, RoundedCornerShape(12.dp))
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
+                    .background(ReelBlue.copy(alpha = 0.15f))
+                    .border(2.dp, ReelBlue, RoundedCornerShape(12.dp))
+                    .padding(horizontal = 14.dp, vertical = 6.dp)
             ) {
-                Text(problem.topic.uppercase(), color = DuoMacawBlue, fontWeight = FontWeight.Black, fontSize = 11.sp)
+                Text("REELS", color = ReelBlue, style = HelveticaSmall)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("💎", fontSize = 18.sp)
                 Spacer(modifier = Modifier.width(4.dp))
-                Text("420", color = DuoMacawBlue, fontWeight = FontWeight.Black, fontSize = 18.sp)
+                Text("420", color = ReelBlue, style = HelveticaSubtitle)
             }
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Divider(color = theme.border, thickness = 1.dp)
 
-        // Mascot speaking the problem
-        DuoNinjaMascot(
-            mood = "FOCUS",
-            dialogText = problem.statement
-        )
+        // =================================================================
+        // FLUID VERTICAL PAGER (INSTAGRAM / TIKTOK REEL MECHANICS)
+        // Scrolls fluidly; preloads adjacent items; stays locked to page
+        // =================================================================
+        Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+            if (activeSolveProblem == null) {
+                VerticalPager(
+                    state = pagerState,
+                    beyondViewportPageCount = 2, // Preload next 2 reels
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    val problem = problems[page]
+                    ReelItemFluid(
+                        problem = problem,
+                        onSwipeRightTooHard = {
+                            onTooHardBail(problem)
+                        },
+                        onCrackIt = {
+                            activeSolveProblem = problem
+                            currentLevel = SolveLevel.L1_APPROACH
+                        }
+                    )
+                }
+            } else {
+                // Interactive Modal Sheet for L1, L2 and Victory
+                val activeProblem = activeSolveProblem!!
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(theme.background)
+                        .padding(16.dp)
+                ) {
+                    when (currentLevel) {
+                        SolveLevel.REEL_CARD -> activeSolveProblem = null
 
-        Spacer(modifier = Modifier.height(14.dp))
+                        SolveLevel.L1_APPROACH -> {
+                            L1ApproachViewDuo(
+                                problem = activeProblem,
+                                onCorrectApproach = {
+                                    currentLevel = SolveLevel.L2_PSEUDO
+                                },
+                                onClose = { activeSolveProblem = null }
+                            )
+                        }
 
-        // Example Card Box
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .clip(RoundedCornerShape(20.dp))
-                .background(DuoSnow)
-                .border(2.dp, DuoSwan, RoundedCornerShape(20.dp))
-                .padding(18.dp)
-        ) {
-            Column(verticalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxSize()) {
+                        SolveLevel.L2_PSEUDO -> {
+                            L2PseudoViewDuo(
+                                problem = activeProblem,
+                                pseudoText = userPseudoInput,
+                                feedback = feedbackMessage,
+                                onPseudoChange = { userPseudoInput = it },
+                                onVerify = {
+                                    val lower = userPseudoInput.lowercase()
+                                    val matches = activeProblem.pseudoKeywords.count { lower.contains(it) }
+                                    if (matches >= 2) {
+                                        feedbackMessage = "Correct logic! You unlocked the clean code."
+                                        currentLevel = SolveLevel.L2_WIN_PYTHON
+                                    } else {
+                                        feedbackMessage = "Needs work. Hint: ${activeProblem.pseudoHint}"
+                                    }
+                                },
+                                onClose = { activeSolveProblem = null }
+                            )
+                        }
+
+                        SolveLevel.L2_WIN_PYTHON -> {
+                            L2WinPythonViewDuo(
+                                problem = activeProblem,
+                                onSaveVaultAndContinue = {
+                                    onSaveToVault(activeProblem, userPseudoInput)
+                                    userPseudoInput = ""
+                                    feedbackMessage = null
+                                    activeSolveProblem = null
+                                    currentLevel = SolveLevel.REEL_CARD
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Individual Full-Screen Reel View item inside VerticalPager.
+ */
+@Composable
+fun ReelItemFluid(
+    problem: ReelProblem,
+    onSwipeRightTooHard: () -> Unit,
+    onCrackIt: () -> Unit
+) {
+    val theme = getAppThemeColors()
+    var dragAccumulated by remember { mutableStateOf(0f) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(problem.id) {
+                detectHorizontalDragGestures(
+                    onDragEnd = {
+                        if (dragAccumulated > 140f) {
+                            onSwipeRightTooHard()
+                        }
+                        dragAccumulated = 0f
+                    },
+                    onHorizontalDrag = { change, dragAmount ->
+                        change.consume()
+                        dragAccumulated += dragAmount
+                    }
+                )
+            }
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            // Topic Pill
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(ReelBlue.copy(alpha = 0.15f))
+                    .padding(horizontal = 10.dp, vertical = 4.dp)
+            ) {
+                Text(problem.topic.uppercase(), color = ReelBlue, style = HelveticaSmall)
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Ninja Mascot Speech
+            DuoNinjaMascot(
+                mood = "FOCUS",
+                dialogText = problem.statement
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Example Box
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(theme.cardBackground)
+                    .border(2.dp, theme.border, RoundedCornerShape(20.dp))
+                    .padding(18.dp)
+            ) {
                 Column {
-                    Text(problem.title, color = DuoEel, fontSize = 24.sp, fontWeight = FontWeight.Black)
+                    Text(problem.title, color = theme.textPrimary, style = HelveticaTitle)
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(12.dp))
-                            .background(DuoPolar)
-                            .border(1.dp, DuoSwan, RoundedCornerShape(12.dp))
+                            .background(theme.surfaceHighlight)
+                            .border(1.dp, theme.border, RoundedCornerShape(12.dp))
                             .padding(12.dp)
                     ) {
                         Column {
-                            Text("INPUT", color = DuoWolf, fontSize = 11.sp, fontWeight = FontWeight.Black)
-                            Text(problem.inputSample, color = DuoEel, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text("TARGET OUTPUT", color = DuoWolf, fontSize = 11.sp, fontWeight = FontWeight.Black)
-                            Text(problem.outputSample, color = DuoFeatherGreen, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                            Text("INPUT", color = theme.textMuted, style = HelveticaSmall)
+                            Text(problem.inputSample, color = theme.textPrimary, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text("OUTPUT TARGET", color = theme.textMuted, style = HelveticaSmall)
+                            Text(problem.outputSample, color = ReelBlue, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
                         }
                     }
-                }
-
-                Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        "Swipe UP to skip • Swipe RIGHT if too hard",
-                        color = DuoWolf,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(bottom = 8.dp)
-                    )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "Scroll UP for next reel  •  Swipe RIGHT if too hard",
+                color = theme.textSecondary,
+                style = HelveticaSmall,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
 
-        // Authentic Duolingo Chunky 3D Button (Reel -> Blue)
-        Duo3DButton(
-            text = "Solve Kata",
-            buttonColor = ReelBlue,
-            shadowColor = ReelBlueDark,
-            onClick = onCrackIt
-        )
+            // Chunky 3D CTA (Reel -> Blue)
+            Duo3DButton(
+                text = "Crack Approach",
+                buttonColor = ReelBlue,
+                shadowColor = ReelBlueDark,
+                onClick = onCrackIt
+            )
+        }
     }
 }
 
@@ -256,6 +295,7 @@ fun L1ApproachViewDuo(
     onCorrectApproach: () -> Unit,
     onClose: () -> Unit
 ) {
+    val theme = getAppThemeColors()
     var selectedOptionId by remember { mutableStateOf<String?>(null) }
     var selectedOption by remember { mutableStateOf<com.leetlingo.app.data.model.Option?>(null) }
     var showResultSheet by remember { mutableStateOf(false) }
@@ -265,14 +305,13 @@ fun L1ApproachViewDuo(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
-            // Header Progress Bar
             Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     "✕",
-                    color = DuoWolf,
+                    color = theme.textMuted,
                     fontWeight = FontWeight.Black,
                     fontSize = 20.sp,
                     modifier = Modifier.clickable { onClose() }.padding(end = 12.dp)
@@ -281,18 +320,17 @@ fun L1ApproachViewDuo(
                     progress = { 0.5f },
                     modifier = Modifier.weight(1f).height(12.dp).clip(RoundedCornerShape(6.dp)),
                     color = ReelBlue,
-                    trackColor = DuoSwan
+                    trackColor = theme.border
                 )
             }
 
             DuoNinjaMascot(
                 mood = "FOCUS",
-                dialogText = "Select the optimal strategy to master ${problem.title}!"
+                dialogText = "Which algorithmic pattern solves ${problem.title}?"
             )
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            // Duolingo 3D Choice Options
             problem.options.forEachIndexed { idx, option ->
                 val isSelected = selectedOptionId == option.id
                 DuoOptionCard(
@@ -314,7 +352,6 @@ fun L1ApproachViewDuo(
             }
         }
 
-        // Bottom Check / Continue Button Area
         Column {
             if (showResultSheet && selectedOption != null) {
                 val isCorrect = selectedOption!!.isCorrect
@@ -322,21 +359,19 @@ fun L1ApproachViewDuo(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp))
-                        .background(if (isCorrect) Color(0xFFD7FFB8) else Color(0xFFFFDFE0))
+                        .background(if (isCorrect) ReelBlue.copy(alpha = 0.15f) else ReflectRed.copy(alpha = 0.15f))
                         .padding(14.dp)
                 ) {
                     Column {
                         Text(
-                            if (isCorrect) "EXCELLENT!" else "NOT QUITE!",
-                            color = if (isCorrect) DuoFeatherGreenDark else DuoCardinalRedDark,
-                            fontWeight = FontWeight.Black,
-                            fontSize = 16.sp
+                            if (isCorrect) "CRACKED!" else "MISSED PATTERN!",
+                            color = if (isCorrect) ReelBlue else ReflectRed,
+                            style = HelveticaSubtitle
                         )
                         Text(
                             selectedOption!!.explanation,
-                            color = DuoEel,
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Medium
+                            color = theme.textPrimary,
+                            style = HelveticaBody
                         )
                     }
                 }
@@ -349,9 +384,7 @@ fun L1ApproachViewDuo(
                     buttonColor = ReelBlue,
                     shadowColor = ReelBlueDark,
                     enabled = selectedOptionId != null,
-                    onClick = {
-                        showResultSheet = true
-                    }
+                    onClick = { showResultSheet = true }
                 )
             } else {
                 Duo3DButton(
@@ -382,6 +415,8 @@ fun L2PseudoViewDuo(
     onVerify: () -> Unit,
     onClose: () -> Unit
 ) {
+    val theme = getAppThemeColors()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
@@ -393,7 +428,7 @@ fun L2PseudoViewDuo(
             ) {
                 Text(
                     "✕",
-                    color = DuoWolf,
+                    color = theme.textMuted,
                     fontWeight = FontWeight.Black,
                     fontSize = 20.sp,
                     modifier = Modifier.clickable { onClose() }.padding(end = 12.dp)
@@ -401,38 +436,37 @@ fun L2PseudoViewDuo(
                 LinearProgressIndicator(
                     progress = { 0.85f },
                     modifier = Modifier.weight(1f).height(12.dp).clip(RoundedCornerShape(6.dp)),
-                    color = DuoFeatherGreen,
-                    trackColor = DuoSwan
+                    color = ReelBlue,
+                    trackColor = theme.border
                 )
             }
 
             DuoNinjaMascot(
                 mood = "HAPPY",
-                dialogText = "Draft the algorithm logic in your own words. No rigid syntax needed!"
+                dialogText = "Draft your pseudo-code in plain words. No syntax stress!"
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // White Card Input Area
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .clip(RoundedCornerShape(18.dp))
-                    .background(DuoSnow)
-                    .border(2.dp, DuoSwan, RoundedCornerShape(18.dp))
+                    .background(theme.cardBackground)
+                    .border(2.dp, theme.border, RoundedCornerShape(18.dp))
                     .padding(14.dp)
             ) {
                 TextField(
                     value = pseudoText,
                     onValueChange = onPseudoChange,
                     modifier = Modifier.fillMaxSize(),
-                    placeholder = { Text("e.g. initialize map seen, iterate nums, check complement in map...", color = DuoHare) },
+                    placeholder = { Text("e.g. initialize map seen, iterate nums, check complement in map...", color = theme.textMuted) },
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = DuoSnow,
-                        unfocusedContainerColor = DuoSnow,
-                        focusedTextColor = DuoEel,
-                        unfocusedTextColor = DuoEel,
+                        focusedContainerColor = theme.cardBackground,
+                        unfocusedContainerColor = theme.cardBackground,
+                        focusedTextColor = theme.textPrimary,
+                        unfocusedTextColor = theme.textPrimary,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent
                     )
@@ -446,14 +480,13 @@ fun L2PseudoViewDuo(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(12.dp))
-                        .background(if (isGood) Color(0xFFD7FFB8) else Color(0xFFFFF2B2))
+                        .background(if (isGood) ReelBlue.copy(alpha = 0.15f) else VaultYellow.copy(alpha = 0.15f))
                         .padding(12.dp)
                 ) {
                     Text(
                         it,
-                        color = if (isGood) DuoFeatherGreenDark else Color(0xFFB28000),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 13.sp
+                        color = if (isGood) ReelBlue else VaultYellowDark,
+                        style = HelveticaSmall
                     )
                 }
             }
@@ -474,6 +507,8 @@ fun L2WinPythonViewDuo(
     problem: ReelProblem,
     onSaveVaultAndContinue: () -> Unit
 ) {
+    val theme = getAppThemeColors()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceBetween
@@ -481,18 +516,17 @@ fun L2WinPythonViewDuo(
         Column {
             DuoNinjaMascot(
                 mood = "HAPPY",
-                dialogText = "Ninja victory! Here is the clean Python 3 implementation."
+                dialogText = "Kata mastered! Here is the clean Python 3 implementation."
             )
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            // Duolingo Code Scroll Container
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(20.dp))
-                    .background(DuoSnow)
-                    .border(2.dp, DuoFeatherGreen, RoundedCornerShape(20.dp))
+                    .background(theme.cardBackground)
+                    .border(2.dp, ReelBlue, RoundedCornerShape(20.dp))
                     .padding(16.dp)
             ) {
                 Column {
@@ -500,13 +534,13 @@ fun L2WinPythonViewDuo(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("PYTHON 3", color = DuoFeatherGreen, fontWeight = FontWeight.Black, fontSize = 12.sp)
-                        Text("O(N) TIME", color = DuoWolf, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text("PYTHON 3", color = ReelBlue, style = HelveticaSmall)
+                        Text("OPTIMAL RUNTIME", color = theme.textMuted, style = HelveticaSmall)
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = problem.pythonSolution,
-                        color = DuoEel,
+                        color = theme.textPrimary,
                         fontFamily = FontFamily.Monospace,
                         fontSize = 13.sp,
                         lineHeight = 19.sp,

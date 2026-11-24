@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leetlingo.app.data.model.Concept
@@ -23,23 +22,23 @@ fun AscendScreen(
     concepts: List<Concept>,
     onAbsorbConcept: (Concept) -> Unit
 ) {
+    val theme = getAppThemeColors()
     val topConcept = concepts.firstOrNull()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DuoPolar)
+            .background(theme.background)
             .padding(16.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
-            // Header
             Row(
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("ASCEND", color = AscendGreen, fontWeight = FontWeight.Black, fontSize = 22.sp)
+                Text("ASCEND", color = AscendGreen, style = HelveticaTitle)
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
@@ -47,60 +46,57 @@ fun AscendScreen(
                         .border(2.dp, AscendGreen, RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text("NEW CONCEPT", color = AscendGreenDark, fontWeight = FontWeight.Black, fontSize = 11.sp)
+                    Text("NEW CONCEPT", color = AscendGreenDark, style = HelveticaSmall)
                 }
             }
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            // Ninja Mascot dialogue
             DuoNinjaMascot(
                 mood = "HAPPY",
-                dialogText = "Ready to ascend? Master this secret technique to unlock higher Katas!"
+                dialogText = "Ready to ascend? Learn this advanced technique to conquer unseen katas!"
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             topConcept?.let { concept ->
-                // Clean White Card with Green Accents
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(20.dp))
-                        .background(AscendWhite)
-                        .border(2.dp, DuoSwan, RoundedCornerShape(20.dp))
+                        .background(theme.cardBackground)
+                        .border(2.dp, theme.border, RoundedCornerShape(20.dp))
                         .padding(18.dp)
                 ) {
                     Column {
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(8.dp))
-                                .background(AscendGreenLight)
+                                .background(AscendGreen.copy(alpha = 0.15f))
                                 .padding(horizontal = 10.dp, vertical = 4.dp)
                         ) {
-                            Text(concept.topic.uppercase(), color = AscendGreenDark, fontSize = 11.sp, fontWeight = FontWeight.Black)
+                            Text(concept.topic.uppercase(), color = AscendGreen, style = HelveticaSmall)
                         }
 
                         Spacer(modifier = Modifier.height(10.dp))
-                        Text(concept.name, color = DuoEel, fontSize = 22.sp, fontWeight = FontWeight.Black)
-                        Text(concept.tagline, color = DuoWolf, fontSize = 13.sp, fontWeight = FontWeight.Medium)
+                        Text(concept.name, color = theme.textPrimary, style = HelveticaTitle)
+                        Text(concept.tagline, color = theme.textSecondary, style = HelveticaSubtitle)
 
                         Spacer(modifier = Modifier.height(14.dp))
-                        Text("SECRET SCROLL IDEA:", color = AscendGreen, fontSize = 12.sp, fontWeight = FontWeight.Black)
+                        Text("SECRET PATTERN:", color = AscendGreen, style = HelveticaSmall)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(concept.coreIdea, color = DuoEel, fontSize = 13.sp, lineHeight = 18.sp, fontWeight = FontWeight.Medium)
+                        Text(concept.coreIdea, color = theme.textPrimary, style = HelveticaBody)
 
                         Spacer(modifier = Modifier.height(14.dp))
-                        Text("APPLY IN INTERVIEWS:", color = AscendGreen, fontSize = 12.sp, fontWeight = FontWeight.Black)
+                        Text("APPLY IN INTERVIEWS:", color = AscendGreen, style = HelveticaSmall)
                         concept.whenToUse.forEach { bullet ->
-                            Text("• $bullet", color = DuoWolf, fontSize = 12.sp, modifier = Modifier.padding(vertical = 1.dp))
+                            Text("• $bullet", color = theme.textSecondary, style = HelveticaBody, modifier = Modifier.padding(vertical = 1.dp))
                         }
                     }
                 }
             }
         }
 
-        // Single Green 3D Button (Ascend -> Green)
         Duo3DButton(
             text = "Absorb Pattern & Drill",
             buttonColor = AscendGreen,

@@ -18,22 +18,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.leetlingo.app.ui.theme.*
 
 /**
- * Authentic Duolingo 3D Button.
- * Has a dark shadow base (`bottomDepth`) that presses down when tapped!
+ * Authentic Duolingo 3D Button with Helvetica Typography & least letter spacing.
  */
 @Composable
 fun Duo3DButton(
     text: String,
     buttonColor: Color,
     shadowColor: Color,
-    textColor: Color = DuoSnow,
+    textColor: Color = Color.White,
     modifier: Modifier = Modifier,
     cornerRadius: Dp = 16.dp,
     bottomDepth: Dp = 4.dp,
@@ -46,7 +44,7 @@ fun Duo3DButton(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(56.dp + bottomDepth)
+            .height(54.dp + bottomDepth)
             .pointerInput(enabled) {
                 if (!enabled) return@pointerInput
                 while (true) {
@@ -70,36 +68,33 @@ fun Duo3DButton(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(54.dp)
                 .offset(y = bottomDepth)
                 .clip(RoundedCornerShape(cornerRadius))
-                .background(if (enabled) shadowColor else DuoSwan)
+                .background(if (enabled) shadowColor else Color(0xFFCCCCCC))
         )
 
-        // Top Button Face (Pushes down by pressOffset)
+        // Top Button Face
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(54.dp)
                 .offset(y = pressOffset.dp)
                 .clip(RoundedCornerShape(cornerRadius))
-                .background(if (enabled) buttonColor else DuoHare),
+                .background(if (enabled) buttonColor else Color(0xFFE2E8F0)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = text.uppercase(),
                 color = textColor,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Black,
-                letterSpacing = 1.sp
+                style = HelveticaButton
             )
         }
     }
 }
 
 /**
- * Duolingo-style Rounded Selectable Option Card.
- * White card with 2px thick borders and 3D base depth.
+ * Option card adapting to Dark/Light theme dynamically.
  */
 @Composable
 fun DuoOptionCard(
@@ -110,9 +105,12 @@ fun DuoOptionCard(
     statusColor: Color? = null,
     onClick: () -> Unit
 ) {
-    val borderColor = statusColor ?: if (isSelected) DuoMacawBlue else DuoSwan
-    val shadowColor = if (isSelected) (statusColor ?: DuoMacawBlueDark) else Color(0xFFD6D6D6)
-    val bgColor = if (isSelected && statusColor == null) Color(0xFFEBF7FD) else DuoSnow
+    val theme = getAppThemeColors()
+    val borderColor = statusColor ?: if (isSelected) ReelBlue else theme.border
+    val shadowColor = if (isSelected) (statusColor ?: ReelBlueDark) else theme.borderHighlight
+    val bgColor = if (isSelected && statusColor == null) {
+        ReelBlue.copy(alpha = 0.15f)
+    } else theme.cardBackground
 
     Box(
         modifier = Modifier
@@ -120,7 +118,6 @@ fun DuoOptionCard(
             .height(78.dp)
             .clickable { onClick() }
     ) {
-        // Bottom shadow
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -130,7 +127,6 @@ fun DuoOptionCard(
                 .background(shadowColor)
         )
 
-        // Top card surface
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -145,20 +141,18 @@ fun DuoOptionCard(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Key badge (e.g. 1, 2, 3, 4)
                 Box(
                     modifier = Modifier
                         .size(32.dp)
                         .clip(RoundedCornerShape(8.dp))
                         .border(2.dp, borderColor, RoundedCornerShape(8.dp))
-                        .background(if (isSelected) borderColor else DuoPolar),
+                        .background(if (isSelected) borderColor else theme.surfaceHighlight),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "$indexNumber",
-                        color = if (isSelected) DuoSnow else DuoWolf,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
+                        color = if (isSelected) Color.White else theme.textSecondary,
+                        style = HelveticaSmall
                     )
                 }
 
@@ -167,14 +161,13 @@ fun DuoOptionCard(
                 Column {
                     Text(
                         text = title,
-                        color = DuoEel,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
+                        color = theme.textPrimary,
+                        style = HelveticaSubtitle
                     )
                     Text(
                         text = description,
-                        color = DuoWolf,
-                        fontSize = 12.sp,
+                        color = theme.textSecondary,
+                        style = HelveticaSmall,
                         maxLines = 1
                     )
                 }
@@ -184,15 +177,16 @@ fun DuoOptionCard(
 }
 
 /**
- * Animated Ninja Mascot ("Kuro-chan" - The Code Shinobi)
- * Replaces Duo the Owl with a friendly, iconic Duolingo-styled Ninja!
+ * Animated Ninja Mascot ("Kuro-chan" - The Code Shinobi) with Speech Bubble.
  */
 @Composable
 fun DuoNinjaMascot(
     modifier: Modifier = Modifier,
-    mood: String = "HAPPY", // HAPPY, FOCUS, CHEER
+    mood: String = "HAPPY",
     dialogText: String? = null
 ) {
+    val theme = getAppThemeColors()
+
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
@@ -200,49 +194,45 @@ fun DuoNinjaMascot(
         // Ninja Mascot Avatar
         Box(
             modifier = Modifier
-                .size(76.dp)
+                .size(72.dp)
                 .clip(CircleShape)
                 .background(DuoNinjaSuit)
                 .border(3.dp, DuoNinjaMask, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                // Red Headband with Ninja Symbol
                 Box(
                     modifier = Modifier
-                        .width(54.dp)
-                        .height(14.dp)
+                        .width(50.dp)
+                        .height(13.dp)
                         .clip(RoundedCornerShape(6.dp))
                         .background(DuoNinjaHeadband),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("</>", color = DuoSnow, fontSize = 8.sp, fontWeight = FontWeight.Black)
+                    Text("</>", color = Color.White, fontSize = 8.sp, fontWeight = FontWeight.Black)
                 }
                 Spacer(modifier = Modifier.height(4.dp))
-                // Eyes Mask opening
                 Box(
                     modifier = Modifier
-                        .width(48.dp)
-                        .height(18.dp)
-                        .clip(RoundedCornerShape(9.dp))
-                        .background(Color(0xFFFFDFBA)), // Peach skin
+                        .width(44.dp)
+                        .height(16.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color(0xFFFFDFBA)),
                     contentAlignment = Alignment.Center
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 7.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Anime expressive eyes
-                        Text(if (mood == "HAPPY") "^" else "•", color = DuoNinjaSuit, fontWeight = FontWeight.Black, fontSize = 14.sp)
-                        Text(if (mood == "HAPPY") "^" else "•", color = DuoNinjaSuit, fontWeight = FontWeight.Black, fontSize = 14.sp)
+                        Text(if (mood == "HAPPY") "^" else "•", color = DuoNinjaSuit, fontWeight = FontWeight.Black, fontSize = 13.sp)
+                        Text(if (mood == "HAPPY") "^" else "•", color = DuoNinjaSuit, fontWeight = FontWeight.Black, fontSize = 13.sp)
                     }
                 }
                 Spacer(modifier = Modifier.height(2.dp))
-                // Mask cloth covering mouth
                 Box(
                     modifier = Modifier
-                        .width(36.dp)
-                        .height(10.dp)
+                        .width(34.dp)
+                        .height(9.dp)
                         .clip(RoundedCornerShape(4.dp))
                         .background(DuoNinjaSuit)
                 )
@@ -251,22 +241,19 @@ fun DuoNinjaMascot(
 
         Spacer(modifier = Modifier.width(12.dp))
 
-        // Duolingo Speech Bubble
         dialogText?.let {
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .clip(RoundedCornerShape(18.dp))
-                    .background(DuoSnow)
-                    .border(2.dp, DuoSwan, RoundedCornerShape(18.dp))
+                    .background(theme.cardBackground)
+                    .border(2.dp, theme.border, RoundedCornerShape(18.dp))
                     .padding(14.dp)
             ) {
                 Text(
                     text = it,
-                    color = DuoEel,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 20.sp
+                    color = theme.textPrimary,
+                    style = HelveticaBody
                 )
             }
         }
