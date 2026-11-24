@@ -1,6 +1,8 @@
 package com.leetlingo.app.ui.screens
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.TrendingFlat
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -200,6 +203,11 @@ fun ReelFeedScreen(
 
 /**
  * Individual Full-Screen Reel View item inside VerticalPager.
+ * When swiping right:
+ * - The card itself DOES NOT MOVE (no horizontal translation).
+ * - A red overlay covering the problem card fades in from 0 opacity up to full redness
+ *   with the text "I DON'T KNOW YET" as the drag progresses towards completion.
+ * - On release past the threshold, the bail action triggers.
  */
 @Composable
 fun ReelItemFluid(
@@ -209,99 +217,167 @@ fun ReelItemFluid(
 ) {
     val theme = getAppThemeColors()
     var dragAccumulated by remember { mutableStateOf(0f) }
+    var isDragging by remember { mutableStateOf(false) }
 
-    Column(
+    // Threshold in pixels to complete the "I don't know yet" bail
+    val swipeThreshold = 300f
+
+    // Calculate normalized progress (0.0f to 1.0f)
+    val targetProgress = (dragAccumulated / swipeThreshold).coerceIn(0f, 1f)
+    val animatedProgress by animateFloatAsState(
+        targetValue = targetProgress,
+        animationSpec = tween(durationMillis = if (isDragging) 0 else 250),
+        label = "SwipeRednessProgress"
+    )
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
             .pointerInput(problem.id) {
                 detectHorizontalDragGestures(
+                    onDragStart = {
+                        isDragging = true
+                    },
                     onDragEnd = {
-                        if (dragAccumulated > 140f) {
+                        isDragging = false
+                        if (dragAccumulated >= swipeThreshold * 0.75f) {
                             onSwipeRightTooHard()
                         }
                         dragAccumulated = 0f
                     },
+                    onDragCancel = {
+                        isDragging = false
+                        dragAccumulated = 0f
+                    },
                     onHorizontalDrag = { change, dragAmount ->
                         change.consume()
-                        dragAccumulated += dragAmount
+                        // Only swipe RIGHT (positive drag) accumulates
+                        val newTotal = dragAccumulated + dragAmount
+                        dragAccumulated = newTotal.coerceAtLeast(0f)
                     }
                 )
             }
-            .padding(16.dp),
-        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
-            // Topic Pill
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(ReelBlue.copy(alpha = 0.15f))
-                    .padding(horizontal = 10.dp, vertical = 4.dp)
-            ) {
-                Text(problem.topic.uppercase(), color = ReelBlue, style = HelveticaSmall)
-            }
+        // Base Content (Card stays stationary, DOES NOT MOVE)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column {
+                // Topic Pill
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(ReelBlue.copy(alpha = 0.15f))
+                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                ) {
+                    Text(problem.topic.uppercase(), color = ReelBlue, style = HelveticaSmall)
+                }
 
-            Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-            // Ninja Mascot Speech
-            DuoNinjaMascot(
-                mood = "FOCUS",
-                dialogText = problem.statement
-            )
+                // Ninja Mascot Speech
+                DuoNinjaMascot(
+                    mood = "FOCUS",
+                    dialogText = problem.statement
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            // Example Box
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(theme.cardBackground)
-                    .border(2.dp, theme.border, RoundedCornerShape(20.dp))
-                    .padding(18.dp)
-            ) {
-                Column {
-                    Text(problem.title, color = theme.textPrimary, style = HelveticaTitle)
-                    Spacer(modifier = Modifier.height(10.dp))
+                // Example Box
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(theme.cardBackground)
+                        .border(2.dp, theme.border, RoundedCornerShape(20.dp))
+                        .padding(18.dp)
+                ) {
+                    Column {
+                        Text(problem.title, color = theme.textPrimary, style = HelveticaTitle)
+                        Spacer(modifier = Modifier.height(10.dp))
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(theme.surfaceHighlight)
-                            .border(1.dp, theme.border, RoundedCornerShape(12.dp))
-                            .padding(12.dp)
-                    ) {
-                        Column {
-                            Text("INPUT", color = theme.textMuted, style = HelveticaSmall)
-                            Text(problem.inputSample, color = theme.textPrimary, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text("OUTPUT TARGET", color = theme.textMuted, style = HelveticaSmall)
-                            Text(problem.outputSample, color = ReelBlue, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(theme.surfaceHighlight)
+                                .border(1.dp, theme.border, RoundedCornerShape(12.dp))
+                                .padding(12.dp)
+                        ) {
+                            Column {
+                                Text("INPUT", color = theme.textMuted, style = HelveticaSmall)
+                                Text(problem.inputSample, color = theme.textPrimary, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text("OUTPUT TARGET", color = theme.textMuted, style = HelveticaSmall)
+                                Text(problem.outputSample, color = ReelBlue, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                            }
                         }
                     }
                 }
             }
+
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    "Scroll UP for next reel  •  Swipe RIGHT if too hard",
+                    color = theme.textSecondary,
+                    style = HelveticaSmall,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+
+                // Chunky 3D CTA (Reel -> Blue)
+                Duo3DButton(
+                    text = "Crack Approach",
+                    buttonColor = ReelBlue,
+                    shadowColor = ReelBlueDark,
+                    onClick = onCrackIt
+                )
+            }
         }
 
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                "Scroll UP for next reel  •  Swipe RIGHT if too hard",
-                color = theme.textSecondary,
-                style = HelveticaSmall,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+        // RED OVERLAY: Covers problem card with redness that increases in opacity as swipe completes
+        if (animatedProgress > 0.01f) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(ReflectRed.copy(alpha = animatedProgress * 0.92f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(32.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Warning,
+                        contentDescription = "I Don't Know Yet",
+                        tint = Color.White.copy(alpha = animatedProgress),
+                        modifier = Modifier.size(56.dp)
+                    )
 
-            // Chunky 3D CTA (Reel -> Blue)
-            Duo3DButton(
-                text = "Crack Approach",
-                buttonColor = ReelBlue,
-                shadowColor = ReelBlueDark,
-                onClick = onCrackIt
-            )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "I DON'T KNOW YET",
+                        color = Color.White.copy(alpha = animatedProgress),
+                        style = HelveticaTitle,
+                        fontWeight = FontWeight.Black
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Saving to Reflection Diagnostic Gap...",
+                        color = Color.White.copy(alpha = animatedProgress * 0.85f),
+                        style = HelveticaSubtitle
+                    )
+                }
+            }
         }
     }
 }
