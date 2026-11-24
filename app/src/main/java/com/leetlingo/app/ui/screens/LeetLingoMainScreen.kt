@@ -1,5 +1,7 @@
 package com.leetlingo.app.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -131,7 +133,11 @@ fun LeetLingoMainScreen() {
 
                 AppTab.VAULT -> VaultScreen(
                     vaultItems = vaultItems,
-                    onLaunchLeetCode = {},
+                    onLaunchLeetCode = { item ->
+                        val url = "https://leetcode.com/problems/${item.problem.leetCodeSlug}/"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        context.startActivity(intent)
+                    },
                     onReattemptL2 = { currentTab = AppTab.REEL }
                 )
 
