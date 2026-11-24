@@ -122,15 +122,6 @@ fun ReelFeedScreen(
                 Spacer(modifier = Modifier.width(6.dp))
                 Text("7", color = VaultYellow, style = HelveticaSubtitle)
             }
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(ReelBlue.copy(alpha = 0.15f))
-                    .border(2.dp, ReelBlue, RoundedCornerShape(12.dp))
-                    .padding(horizontal = 14.dp, vertical = 6.dp)
-            ) {
-                Text("Reels", color = ReelBlue, style = HelveticaSmall)
-            }
             // Pro Ad-Free Pill / Status Indicator
             Box(
                 modifier = Modifier
