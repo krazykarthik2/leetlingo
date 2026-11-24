@@ -3,28 +3,58 @@
     "id": "concept_001",
     "name": "Monotonic Stack",
     "topic": "Stack & Greedy",
-    "tagline": "Next Greater Element in O(n) Time",
-    "coreIdea": "A stack maintained strictly in monotonic (increasing or decreasing) order. Whenever a new element violates the order, you pop until the condition holds.",
+    "tagline": "Next Greater Element in O(n) Linear Time",
+    "coreIdea": "Maintain elements strictly sorted (monotonically increasing or decreasing). When an incoming item violates monotonicity, pop and process resolved boundaries immediately. Each item enters and exits the stack at most once.",
     "whenToUse": [
-      "Find the next greater/smaller element for every element",
-      "Maximum rectangle in histogram",
-      "Daily temperatures / Stock span problem"
+      "Find the next or previous greater / smaller element in O(n)",
+      "Calculate largest rectangular area under histogram skyline",
+      "Solve trapping rain water and daily temperature spikes",
+      "Online stock span and sliding range maximum queries"
     ],
-    "prerequisites": ["Standard Stack", "Array Iteration"],
+    "prerequisites": ["LIFO Stack Invariants", "Array Two-Pointer Basics"],
     "practiceReelIds": ["reel_003"]
   },
   {
     "id": "concept_002",
     "name": "Trie (Prefix Tree)",
     "topic": "Trees & Strings",
-    "tagline": "Blazing fast prefix queries and autocomplete",
-    "coreIdea": "A tree where each node represents a character. Shared prefixes share branches, enabling O(L) search time where L is word length.",
+    "tagline": "Prefix Indexing & Bitwise XOR in O(L) Time",
+    "coreIdea": "A tree where each node represents a character or bit. Shared prefixes share root paths, converting dictionary searches and longest-prefix checks into fast O(L) path traversals where L is key length.",
     "whenToUse": [
-      "Prefix searching (startsWith)",
-      "Dictionary word validation",
-      "Bitwise maximum XOR queries"
+      "Instant typeahead prefix validation and autocomplete",
+      "Boggle & word search board backtracking pruning",
+      "Bitwise maximum XOR pairs using binary 0/1 tries",
+      "IP routing table longest subnet prefix matching"
     ],
-    "prerequisites": ["Hash Maps", "Tree Nodes"],
+    "prerequisites": ["Hash Maps", "N-ary Tree Nodes"],
+    "practiceReelIds": ["reel_001"]
+  },
+  {
+    "id": "concept_003",
+    "name": "Sliding Window Maximum",
+    "topic": "Queues & Deques",
+    "tagline": "O(1) Window Extremes with Double-Ended Queues",
+    "coreIdea": "Use a monotonic deque storing array indices. As the window glides forward, evict indices that fell behind the left boundary from the front, and purge smaller elements from the back before appending.",
+    "whenToUse": [
+      "Maximum or minimum values across moving subarrays of size K",
+      "Longest substring with at most K distinct characters",
+      "Continuous subarray sum and product bounds"
+    ],
+    "prerequisites": ["Double-Ended Queue (Deque)", "Window Invariants"],
+    "practiceReelIds": ["reel_002"]
+  },
+  {
+    "id": "concept_004",
+    "name": "Topological Sort (Kahn's)",
+    "topic": "Graphs & DAGs",
+    "tagline": "Dependency Resolution & Cycle Detection in O(V + E)",
+    "coreIdea": "Track in-degrees of all vertices. Seed a queue with all zero in-degree nodes (no dependencies). Dequeue nodes, append to order, and decrement neighbors' in-degrees, enqueuing new zero-degree nodes.",
+    "whenToUse": [
+      "Course schedule prerequisites and build systems",
+      "Detect cycles in directed dependency graphs",
+      "Alien dictionary lexical ordering derivation"
+    ],
+    "prerequisites": ["Adjacency List", "Breadth-First Search (BFS)"],
     "practiceReelIds": ["reel_001"]
   }
 ]

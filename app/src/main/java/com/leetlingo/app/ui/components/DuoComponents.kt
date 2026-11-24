@@ -85,7 +85,7 @@ fun Duo3DButton(
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = text.uppercase(),
+                text = text,
                 color = textColor,
                 style = HelveticaButton
             )

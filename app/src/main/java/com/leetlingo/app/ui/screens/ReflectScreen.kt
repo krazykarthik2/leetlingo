@@ -2,13 +2,16 @@ package com.leetlingo.app.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Analytics
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +29,9 @@ fun ReflectScreen(
     onAttackBleed: (topicName: String) -> Unit
 ) {
     val theme = getAppThemeColors()
-    val biggestBleed = profile.topics.firstOrNull { it.isBiggestBleed } ?: profile.topics.firstOrNull()
+    val initialBleed = profile.topics.firstOrNull { it.isBiggestBleed } ?: profile.topics.firstOrNull()
+    var selectedTopicName by remember { mutableStateOf(initialBleed?.name ?: "") }
+    val activeTopic = profile.topics.firstOrNull { it.name == selectedTopicName } ?: initialBleed
 
     Column(
         modifier = Modifier
@@ -57,11 +62,12 @@ fun ReflectScreen(
 
             DuoNinjaMascot(
                 mood = "FOCUS",
-                dialogText = "Weakness diagnostic complete. Focus on your biggest gap to patch the leak!"
+                dialogText = "Weakness diagnostic complete. Tap any gap to inspect your failure patterns."
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Topic Mastery List with interactive selection
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -72,10 +78,18 @@ fun ReflectScreen(
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                     profile.topics.forEach { topic ->
-                        Column {
+                        val isSelected = topic.name == selectedTopicName
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable { selectedTopicName = topic.name }
+                                .padding(vertical = 4.dp, horizontal = 2.dp)
+                        ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     if (topic.isBiggestBleed) {
@@ -88,24 +102,31 @@ fun ReflectScreen(
                                     }
                                     Text(
                                         text = topic.name,
-                                        color = if (topic.isBiggestBleed) ReflectRed else theme.textPrimary,
+                                        color = if (isSelected) ReflectRed else theme.textPrimary,
                                         style = HelveticaSubtitle
                                     )
                                 }
-                                Text(
-                                    text = "${topic.masteryScore}%",
-                                    color = theme.textMuted,
-                                    style = HelveticaSmall
-                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = "${topic.won}/${topic.attempted} won  •  ",
+                                        color = theme.textMuted,
+                                        style = HelveticaSmall
+                                    )
+                                    Text(
+                                        text = "${topic.masteryScore}%",
+                                        color = if (topic.masteryScore < 50) ReflectRed else theme.textPrimary,
+                                        style = HelveticaSmall
+                                    )
+                                }
                             }
-                            Spacer(modifier = Modifier.height(4.dp))
+                            Spacer(modifier = Modifier.height(6.dp))
                             LinearProgressIndicator(
                                 progress = { topic.masteryScore / 100f },
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(10.dp)
                                     .clip(RoundedCornerShape(5.dp)),
-                                color = if (topic.isBiggestBleed) ReflectRed else theme.textMuted,
+                                color = if (topic.isBiggestBleed) ReflectRed else if (topic.masteryScore > 70) AscendGreen else VaultYellowDark,
                                 trackColor = theme.surfaceHighlight
                             )
                         }
@@ -115,29 +136,53 @@ fun ReflectScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            biggestBleed?.let {
+            // Dynamic Gap Diagnostic Card
+            activeTopic?.let { topic ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(16.dp))
-                        .background(ReflectRed.copy(alpha = 0.15f))
-                        .border(2.dp, ReflectRed, RoundedCornerShape(16.dp))
+                        .background(if (topic.isBiggestBleed) ReflectRed.copy(alpha = 0.12f) else theme.surfaceHighlight)
+                        .border(1.5.dp, if (topic.isBiggestBleed) ReflectRed else theme.border, RoundedCornerShape(16.dp))
                         .padding(14.dp)
                 ) {
                     Column {
-                        Text("Critical Gap: ${it.name}", color = ReflectRed, style = HelveticaSmall)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = if (topic.isBiggestBleed) "Critical Gap: ${topic.name}" else "Diagnostic: ${topic.name}",
+                                color = if (topic.isBiggestBleed) ReflectRed else theme.textPrimary,
+                                style = HelveticaSmall
+                            )
+                            Text(
+                                text = "${100 - topic.masteryScore}% Leak Rate",
+                                color = if (topic.isBiggestBleed) ReflectRed else theme.textMuted,
+                                style = HelveticaSmall
+                            )
+                        }
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(profile.summary, color = theme.textPrimary, style = HelveticaBody)
+                        Text(
+                            text = if (topic.isBiggestBleed) {
+                                profile.summary
+                            } else {
+                                "Mastery score is currently at ${topic.masteryScore}%. Solve 3 targeted reels to patch this concept."
+                            },
+                            color = theme.textPrimary,
+                            style = HelveticaBody
+                        )
                     }
                 }
             }
         }
 
         Duo3DButton(
-            text = "Attack Gap: ${biggestBleed?.name ?: "Drill"}",
+            text = "Attack Gap: ${activeTopic?.name ?: "Drill"}",
             buttonColor = ReflectRed,
             shadowColor = ReflectRedDark,
-            onClick = { biggestBleed?.let { onAttackBleed(it.name) } }
+            onClick = { activeTopic?.let { onAttackBleed(it.name) } }
         )
     }
 }
