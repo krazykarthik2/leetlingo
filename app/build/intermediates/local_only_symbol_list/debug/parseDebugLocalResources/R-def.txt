@@ -1,5 +1,9 @@
 R_DEF: Internal format may change without notice
 local
+font helvetica_bold
+font helvetica_bold_oblique
+font helvetica_oblique
+font helvetica_regular
 string gcm_defaultSenderId
 string google_api_key
 string google_app_id

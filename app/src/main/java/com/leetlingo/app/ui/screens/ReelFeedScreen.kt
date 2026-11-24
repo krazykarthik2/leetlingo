@@ -9,6 +9,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Diamond
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.TrendingFlat
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -75,7 +82,12 @@ fun ReelFeedScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("🔥", fontSize = 20.sp)
+                Icon(
+                    imageVector = Icons.Filled.LocalFireDepartment,
+                    contentDescription = "Streak",
+                    tint = VaultYellow,
+                    modifier = Modifier.size(22.dp)
+                )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text("7", color = VaultYellow, style = HelveticaSubtitle)
             }
@@ -89,7 +101,12 @@ fun ReelFeedScreen(
                 Text("REELS", color = ReelBlue, style = HelveticaSmall)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("💎", fontSize = 18.sp)
+                Icon(
+                    imageVector = Icons.Filled.Diamond,
+                    contentDescription = "Gems",
+                    tint = ReelBlue,
+                    modifier = Modifier.size(20.dp)
+                )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("420", color = ReelBlue, style = HelveticaSubtitle)
             }
@@ -309,12 +326,11 @@ fun L1ApproachViewDuo(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    "✕",
-                    color = theme.textMuted,
-                    fontWeight = FontWeight.Black,
-                    fontSize = 20.sp,
-                    modifier = Modifier.clickable { onClose() }.padding(end = 12.dp)
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = "Close",
+                    tint = theme.textMuted,
+                    modifier = Modifier.size(24.dp).clickable { onClose() }
                 )
                 LinearProgressIndicator(
                     progress = { 0.5f },
@@ -426,12 +442,11 @@ fun L2PseudoViewDuo(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 12.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    "✕",
-                    color = theme.textMuted,
-                    fontWeight = FontWeight.Black,
-                    fontSize = 20.sp,
-                    modifier = Modifier.clickable { onClose() }.padding(end = 12.dp)
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = "Close",
+                    tint = theme.textMuted,
+                    modifier = Modifier.size(24.dp).clickable { onClose() }
                 )
                 LinearProgressIndicator(
                     progress = { 0.85f },

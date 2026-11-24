@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.leetlingo.app-mergeDebugResources-58:/values-v21/values-v21.xml",
+            "outputFile": "com.leetlingo.app-mergeDebugResources-59:/values-v21/values-v21.xml",
             "map": [
                 {
                     "source": "C:\\Users\\karthikkrazy\\.gradle\\caches\\8.9\\transforms\\5c69858db5bec6b4bc6f58a8b8bdca7d\\transformed\\credentials-play-services-auth-1.2.0-rc01\\res\\values-v21\\values-v21.xml",

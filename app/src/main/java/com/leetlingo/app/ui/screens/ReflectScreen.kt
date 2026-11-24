@@ -4,6 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -74,11 +77,21 @@ fun ReflectScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(
-                                    text = topic.name + if (topic.isBiggestBleed) " ⚠️" else "",
-                                    color = if (topic.isBiggestBleed) ReflectRed else theme.textPrimary,
-                                    style = HelveticaSubtitle
-                                )
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    if (topic.isBiggestBleed) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Warning,
+                                            contentDescription = "Bleed",
+                                            tint = ReflectRed,
+                                            modifier = Modifier.size(16.dp).padding(end = 4.dp)
+                                        )
+                                    }
+                                    Text(
+                                        text = topic.name,
+                                        color = if (topic.isBiggestBleed) ReflectRed else theme.textPrimary,
+                                        style = HelveticaSubtitle
+                                    )
+                                }
                                 Text(
                                     text = "${topic.masteryScore}%",
                                     color = theme.textMuted,

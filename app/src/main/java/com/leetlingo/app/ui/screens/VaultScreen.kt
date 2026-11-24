@@ -109,10 +109,10 @@ fun VaultScreen(
                             ) {
                                 Text(item.problem.title, color = theme.textPrimary, style = HelveticaSubtitle)
                                 val (statusText, statusCol) = when (item.memoryState) {
-                                    MemoryState.FRESH -> "Fresh" to AscendGreen
-                                    MemoryState.FADING -> "Fading" to VaultYellowDark
-                                    MemoryState.COLD -> "Cold" to ReflectRed
-                                    MemoryState.CONQUERED -> "Done" to ReelBlue
+                                    MemoryState.FRESH -> "FRESH" to AscendGreen
+                                    MemoryState.FADING -> "FADING" to VaultYellowDark
+                                    MemoryState.COLD -> "COLD" to ReflectRed
+                                    MemoryState.CONQUERED -> "CONQUERED" to ReelBlue
                                 }
                                 Text(statusText, color = statusCol, style = HelveticaSmall)
                             }

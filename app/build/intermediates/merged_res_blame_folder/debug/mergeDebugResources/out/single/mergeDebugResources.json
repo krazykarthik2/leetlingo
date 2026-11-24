@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "com.leetlingo.app-debug-61:/font_helvetica_bold_oblique.ttf.flat",
+        "source": "com.leetlingo.app-main-63:/font/helvetica_bold_oblique.ttf"
+    },
+    {
+        "merged": "com.leetlingo.app-debug-61:/font_helvetica_regular.ttf.flat",
+        "source": "com.leetlingo.app-main-63:/font/helvetica_regular.ttf"
+    },
+    {
+        "merged": "com.leetlingo.app-debug-61:/font_helvetica_oblique.ttf.flat",
+        "source": "com.leetlingo.app-main-63:/font/helvetica_oblique.ttf"
+    },
+    {
+        "merged": "com.leetlingo.app-debug-61:/font_helvetica_bold.ttf.flat",
+        "source": "com.leetlingo.app-main-63:/font/helvetica_bold.ttf"
+    }
+]

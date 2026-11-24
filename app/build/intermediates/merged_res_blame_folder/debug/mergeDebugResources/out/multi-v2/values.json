@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.leetlingo.app-mergeDebugResources-58:/values/values.xml",
+            "outputFile": "com.leetlingo.app-mergeDebugResources-59:/values/values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\karthikkrazy\\.gradle\\caches\\8.9\\transforms\\3eddf4f62a428ef7688974803456197d\\transformed\\core-common-2.0.3\\res\\values\\values.xml",
