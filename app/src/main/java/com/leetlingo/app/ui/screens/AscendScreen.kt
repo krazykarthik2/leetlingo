@@ -30,8 +30,7 @@ fun AscendScreen(
     onAbsorbConcept: (Concept) -> Unit
 ) {
     val theme = getAppThemeColors()
-    var selectedIndex by remember { mutableIntStateOf(0) }
-    val currentConcept = concepts.getOrNull(selectedIndex) ?: concepts.firstOrNull()
+    val currentConcept = remember(concepts) { concepts.randomOrNull() }
 
     Column(
         modifier = Modifier
@@ -54,33 +53,7 @@ fun AscendScreen(
                         .border(2.dp, AscendGreen, RoundedCornerShape(12.dp))
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
-                    Text("${concepts.size} Patterns Available", color = AscendGreenDark, style = HelveticaSmall)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            // Selector Chips to navigate all available concept masterclasses
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                concepts.forEachIndexed { idx, c ->
-                    val isSelected = idx == selectedIndex
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(if (isSelected) AscendGreen else theme.cardBackground)
-                            .border(1.5.dp, if (isSelected) AscendGreenDark else theme.border, RoundedCornerShape(12.dp))
-                            .clickable { selectedIndex = idx }
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
-                    ) {
-                        Text(
-                            text = c.name,
-                            color = if (isSelected) Color.White else theme.textSecondary,
-                            style = HelveticaSmall
-                        )
-                    }
+                    Text("Random Encounter", color = AscendGreenDark, style = HelveticaSmall)
                 }
             }
 
