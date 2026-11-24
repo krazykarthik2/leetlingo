@@ -1,0 +1,11 @@
+{
+  "topics": [
+    { "name": "Bit Manipulation", "masteryScore": 24, "attempted": 12, "won": 3, "isBiggestBleed": true },
+    { "name": "Dynamic Programming", "masteryScore": 38, "attempted": 18, "won": 7, "isBiggestBleed": false },
+    { "name": "Graph Traversal", "masteryScore": 51, "attempted": 14, "won": 7, "isBiggestBleed": false },
+    { "name": "Stack & Queues", "masteryScore": 68, "attempted": 22, "won": 15, "isBiggestBleed": false },
+    { "name": "Trees & Binary Search", "masteryScore": 72, "attempted": 25, "won": 18, "isBiggestBleed": false },
+    { "name": "Hash Maps & Sets", "masteryScore": 95, "attempted": 40, "won": 38, "isBiggestBleed": false }
+  ],
+  "summary": "You've bailed on 75% of Bit Manipulation problems as 'Too Hard'. Your biggest gap is XOR & Bitmasking."
+}

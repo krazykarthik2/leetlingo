@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1029564057282",
+    "project_id": "leetlingo-5d54e",
+    "storage_bucket": "leetlingo-5d54e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029564057282:android:7ed8cbde29a5794f1cdd5b",
+        "android_client_info": {
+          "package_name": "com.leetlingo.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqFUOgE-kn3lDAGUCd68G_I7vcMbCOzSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
