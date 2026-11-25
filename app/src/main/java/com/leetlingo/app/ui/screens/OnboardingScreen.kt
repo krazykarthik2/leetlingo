@@ -20,12 +20,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.leetlingo.app.ui.components.Duo3DButton
 import com.leetlingo.app.ui.components.DuoNinjaMascot
 import com.leetlingo.app.ui.components.DuoOptionCard
 import com.leetlingo.app.ui.theme.*
+import kotlinx.coroutines.launch
 
 enum class OnboardingStep {
     WELCOME,
@@ -42,12 +50,17 @@ fun OnboardingScreen(
     onComplete: (leetCodeUrl: String, level: String, dailyGoal: String, target: String) -> Unit
 ) {
     val theme = getAppThemeColors()
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val auth = remember { FirebaseAuth.getInstance() }
     var step by remember { mutableStateOf(OnboardingStep.WELCOME) }
 
     // Auth state
     var isSignUp by remember { mutableStateOf(true) }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var isAuthLoading by remember { mutableStateOf(false) }
+    var authError by remember { mutableStateOf<String?>(null) }
 
     // Profile & Survey state
     var leetCodeUrl by remember { mutableStateOf("") }
@@ -137,14 +150,60 @@ fun OnboardingScreen(
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        // Continue with Google
+                        // Continue with Google (Credential Manager + Firebase Auth)
                         Duo3DButton(
-                            text = "Continue with Google",
+                            text = if (isAuthLoading) "Signing in..." else "Continue with Google",
                             buttonColor = theme.cardBackground,
                             shadowColor = theme.border,
                             textColor = theme.textPrimary,
-                            onClick = { step = OnboardingStep.PERMISSIONS }
+                            enabled = !isAuthLoading,
+                            onClick = {
+                                authError = null
+                                val webClientIdRes = context.resources.getIdentifier(
+                                    "default_web_client_id",
+                                    "string",
+                                    context.packageName
+                                )
+                                val webClientId = if (webClientIdRes != 0) context.getString(webClientIdRes) else ""
+                                if (webClientId.isBlank()) {
+                                    authError = "Enable Google Sign-In in Firebase Console & update google-services.json."
+                                    return@Duo3DButton
+                                }
+                                isAuthLoading = true
+                                coroutineScope.launch {
+                                    try {
+                                        val credentialManager = CredentialManager.create(context)
+                                        val googleIdOption = GetGoogleIdOption.Builder()
+                                            .setFilterByAuthorizedAccounts(false)
+                                            .setServerClientId(webClientId)
+                                            .build()
+                                        val request = GetCredentialRequest.Builder()
+                                            .addCredentialOption(googleIdOption)
+                                            .build()
+                                        val result = credentialManager.getCredential(context, request)
+                                        val googleCred = GoogleIdTokenCredential.createFrom(result.credential.data)
+                                        val firebaseCred = GoogleAuthProvider.getCredential(googleCred.idToken, null)
+                                        auth.signInWithCredential(firebaseCred)
+                                            .addOnSuccessListener {
+                                                isAuthLoading = false
+                                                step = OnboardingStep.PERMISSIONS
+                                            }
+                                            .addOnFailureListener { e ->
+                                                isAuthLoading = false
+                                                authError = e.localizedMessage ?: "Google Sign-In failed."
+                                            }
+                                    } catch (e: Exception) {
+                                        isAuthLoading = false
+                                        authError = e.localizedMessage ?: "Google Sign-In cancelled."
+                                    }
+                                }
+                            }
                         )
+
+                        authError?.let { err ->
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(err, color = ReflectRed, style = HelveticaSmall)
+                        }
 
                         Spacer(modifier = Modifier.height(18.dp))
 
@@ -318,8 +377,23 @@ fun OnboardingScreen(
                     text = if (isSignUp) "Sign Up" else "Log In",
                     buttonColor = AscendGreen,
                     shadowColor = AscendGreenDark,
-                    enabled = email.isNotBlank() && password.isNotBlank(),
-                    onClick = { step = OnboardingStep.PERMISSIONS }
+                    enabled = email.isNotBlank() && password.isNotBlank() && !isAuthLoading,
+                    onClick = {
+                        authError = null
+                        isAuthLoading = true
+                        val task = if (isSignUp) {
+                            auth.createUserWithEmailAndPassword(email.trim(), password)
+                        } else {
+                            auth.signInWithEmailAndPassword(email.trim(), password)
+                        }
+                        task.addOnSuccessListener {
+                            isAuthLoading = false
+                            step = OnboardingStep.PERMISSIONS
+                        }.addOnFailureListener { e ->
+                            isAuthLoading = false
+                            authError = e.localizedMessage ?: "Authentication failed."
+                        }
+                    }
                 )
             }
 
