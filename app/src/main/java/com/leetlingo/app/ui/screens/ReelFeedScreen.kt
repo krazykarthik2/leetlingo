@@ -1,8 +1,7 @@
 package com.leetlingo.app.ui.screens
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.WavingHand
 import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material3.*
@@ -23,12 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.leetlingo.app.data.model.ReelProblem
 import com.leetlingo.app.ui.components.Duo3DButton
@@ -491,6 +493,42 @@ fun ReelItemFluid(
     // Threshold in pixels to complete the "I don't know yet" bail
     val swipeThreshold = 300f
 
+    // Timed progressive reveal stages (1: Ninja, 2: Statement, 3: Title+I/O, 4: Hint+CTA)
+    var revealStage by remember(problem.id) { mutableIntStateOf(0) }
+    var isLingering by remember(problem.id) { mutableStateOf(false) }
+
+    LaunchedEffect(problem.id) {
+        revealStage = 1 // Ninja mascot
+        delay(350)
+        revealStage = 2 // Statement text
+        delay(450)
+        revealStage = 3 // Problem title & Input/Output
+        delay(450)
+        revealStage = 4 // Constraints/hint & "I know" CTA
+        delay(6000)
+        isLingering = true // Gentle up/down nudge if lingering
+    }
+
+    val infiniteTransition = rememberInfiniteTransition(label = "ReelAnimations")
+    val waveAngle by infiniteTransition.animateFloat(
+        initialValue = -14f,
+        targetValue = 14f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(420, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "WavingHand"
+    )
+    val lingerOffsetY by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = if (isLingering) -14f else 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(750, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "LingerBob"
+    )
+
     // Calculate normalized progress (0.0f to 1.0f)
     val targetProgress = (dragAccumulated / swipeThreshold).coerceIn(0f, 1f)
     val animatedProgress by animateFloatAsState(
@@ -527,73 +565,123 @@ fun ReelItemFluid(
                 )
             }
     ) {
-        // Base Content (Card stays stationary, DOES NOT MOVE)
+        // Base Content (Card stays stationary horizontally, gently bobs if lingering)
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .graphicsLayer { translationY = if (isLingering) lingerOffsetY else 0f }
                 .padding(16.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                // Ninja Mascot Speech (No topic/technique spoiler)
-                DuoNinjaMascot(
-                    mood = "FOCUS",
-                    dialogText = problem.statement
-                )
+                // Stage 1 & 2: Ninja Mascot + Statement Reveal
+                AnimatedVisibility(
+                    visible = revealStage >= 1,
+                    enter = fadeIn(tween(260)) + slideInVertically(tween(260)) { 18 }
+                ) {
+                    DuoNinjaMascot(
+                        mood = "FOCUS",
+                        dialogText = if (revealStage >= 2) problem.statement else "..."
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Example Box
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(theme.cardBackground)
-                        .border(2.dp, theme.border, RoundedCornerShape(20.dp))
-                        .padding(18.dp)
+                // Stage 3: Problem Title & Input/Output Box
+                AnimatedVisibility(
+                    visible = revealStage >= 3,
+                    enter = fadeIn(tween(300)) + slideInVertically(tween(300)) { 24 }
                 ) {
-                    Column {
-                        Text(problem.title, color = theme.textPrimary, style = HelveticaTitle)
-                        Spacer(modifier = Modifier.height(10.dp))
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(theme.cardBackground)
+                            .border(2.dp, theme.border, RoundedCornerShape(20.dp))
+                            .padding(18.dp)
+                    ) {
+                        Column {
+                            Text(problem.title, color = theme.textPrimary, style = HelveticaTitle)
+                            Spacer(modifier = Modifier.height(10.dp))
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(theme.surfaceHighlight)
-                                .border(1.dp, theme.border, RoundedCornerShape(12.dp))
-                                .padding(12.dp)
-                        ) {
-                            Column {
-                                Text("Input", color = theme.textMuted, style = HelveticaSmall)
-                                Text(problem.inputSample, color = theme.textPrimary, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text("Target Output", color = theme.textMuted, style = HelveticaSmall)
-                                Text(problem.outputSample, color = ReelBlue, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(theme.surfaceHighlight)
+                                    .border(1.dp, theme.border, RoundedCornerShape(12.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Column {
+                                    Text("Input", color = theme.textMuted, style = HelveticaSmall)
+                                    Text(problem.inputSample, color = theme.textPrimary, fontFamily = FontFamily.Monospace, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    Text("Target Output", color = theme.textMuted, style = HelveticaSmall)
+                                    Text(problem.outputSample, color = ReelBlue, fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Black)
+                                }
                             }
                         }
                     }
                 }
             }
 
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+            // Stage 4: Constraints/Hint & Animated Waving Hand "I know" 3D Button
+            AnimatedVisibility(
+                visible = revealStage >= 4,
+                enter = fadeIn(tween(300)) + slideInVertically(tween(300)) { 24 }
             ) {
-                Text(
-                    "Scroll up for next reel  •  Swipe right if too hard",
-                    color = theme.textSecondary,
-                    style = HelveticaSmall,
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        "Scroll up for next reel  •  Swipe right if too hard",
+                        color = theme.textSecondary,
+                        style = HelveticaSmall,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
 
-                // Chunky 3D CTA (Reel -> Blue)
-                Duo3DButton(
-                    text = "Crack Approach",
-                    buttonColor = ReelBlue,
-                    shadowColor = ReelBlueDark,
-                    onClick = onCrackIt
-                )
+                    // Chunky 3D "I know" CTA with animated waving hand icon
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(58.dp)
+                            .clickable { onCrackIt() }
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(54.dp)
+                                .offset(y = 4.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(ReelBlueDark)
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(54.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(ReelBlue),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.WavingHand,
+                                    contentDescription = "I know",
+                                    tint = Color.White,
+                                    modifier = Modifier
+                                        .size(22.dp)
+                                        .graphicsLayer { rotationZ = waveAngle }
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("I know", color = Color.White, style = HelveticaButton)
+                            }
+                        }
+                    }
+                }
             }
         }
 
