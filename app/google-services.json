@@ -12,7 +12,20 @@
           "package_name": "com.leetlingo.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1029564057282-que6ca8l45shdj5gscmtkq4c7aa82gc8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.leetlingo.app",
+            "certificate_hash": "8bd84d90628d9057407a3d208c36031431413276"
+          }
+        },
+        {
+          "client_id": "1029564057282-5la09dl55n6gvo4c7f8frc98ibv4jsvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBqFUOgE-kn3lDAGUCd68G_I7vcMbCOzSE"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029564057282-5la09dl55n6gvo4c7f8frc98ibv4jsvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
